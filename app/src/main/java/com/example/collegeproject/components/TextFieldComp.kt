@@ -13,22 +13,24 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun TextFieldComp(
     modifier: Modifier = Modifier,
+    textInput: String,
     labelText: String,
+    onValueChange: (String) -> Unit,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
     maxLines: Int = 1,
     minLines: Int = 1,
     maxLength: Int = Int.MAX_VALUE,
-    leadingIcon: Painter
+    leadingIcon: Painter,
+    isPhoneField: Boolean = false
 ) {
-    var textInput by rememberSaveable {
-        mutableStateOf("")
-    }
 
     OutlinedTextField(
         modifier = modifier
@@ -36,13 +38,14 @@ fun TextFieldComp(
             .padding(top = 8.dp),
         value = textInput,
         onValueChange = {
-            if (it.length <= maxLength) textInput = it
+            onValueChange(it)
         },
         label = { Text(text = labelText) },
-        keyboardOptions = keyboardOptions,
+        keyboardOptions = keyboardOptions.copy(imeAction = ImeAction.Next),
         singleLine = minLines == 1,
         maxLines = maxLines,
         minLines = minLines,
+        prefix = { Text(text = if (isPhoneField) "+91 " else "") },
         leadingIcon = { Icon(painter = leadingIcon, contentDescription = null) }
     )
 }

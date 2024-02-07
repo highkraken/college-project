@@ -28,12 +28,10 @@ import com.example.collegeproject.R
 @Composable
 fun PasswordTextFieldComp(
     modifier: Modifier = Modifier,
+    passwordText: String,
+    onPasswordChange: (String) -> Unit,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
 ) {
-    var password by rememberSaveable {
-        mutableStateOf("")
-    }
-
     var passwordVisibility by rememberSaveable {
         mutableStateOf(false)
     }
@@ -42,10 +40,8 @@ fun PasswordTextFieldComp(
         modifier = modifier
             .fillMaxWidth()
             .padding(top = 8.dp),
-        value = password,
-        onValueChange = {
-            password = it
-        },
+        value = passwordText,
+        onValueChange = onPasswordChange,
         label = { Text(text = stringResource(id = R.string.password)) },
         keyboardOptions = keyboardOptions,
         singleLine = true,
