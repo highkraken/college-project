@@ -1,6 +1,7 @@
 package com.example.collegeproject.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,38 +22,51 @@ fun RadioGroupComp(
     options: List<String>,
     label: String,
     selectedOption: String,
-    onOptionSelectChange: (String) -> Unit
+    onOptionSelectChange: (String) -> Unit,
+    isError: Boolean = false,
 ) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceAround,
-        verticalAlignment = Alignment.CenterVertically
+    Column(
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Text(text = label)
-        options.forEach { option ->
-            Row(
-                modifier = Modifier
-                    .selectable(
-                        selected = option == selectedOption,
+        Row(
+            modifier = modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = label)
+            options.forEach { option ->
+                Row(
+                    modifier = Modifier
+                        .selectable(
+                            selected = option == selectedOption,
+                            onClick = {
+                                onOptionSelectChange(option)
+                            }
+                        )
+                        .padding(top = 8.dp, start = 8.dp, end = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    RadioButton(
+                        selected = selectedOption == option,
                         onClick = {
                             onOptionSelectChange(option)
                         }
                     )
-                    .padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                RadioButton(
-                    selected = selectedOption == option,
-                    onClick = {
-                        onOptionSelectChange(option)
-                    }
-                )
-                Text(
-                    text = option,
-                    modifier = Modifier.padding(8.dp)
-                )
+                    Text(
+                        text = option,
+                        modifier = Modifier.padding(8.dp)
+                    )
+                }
             }
+        }
+        if (isError) {
+            Text(
+                modifier = Modifier.padding(start = 16.dp),
+                text = "Select a user type",
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodySmall
+            )
         }
     }
 }

@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.collegeproject.app.BillOrganizerApp
+import com.example.collegeproject.database.UserDatabase
 import com.example.collegeproject.ui.theme.CollegeProjectTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,7 +24,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    BillOrganizerApp()
+                    val userDatabase = UserDatabase.getInstance(applicationContext)
+                    BillOrganizerApp(userDatabase.userDatabaseDao)
                 }
             }
         }

@@ -3,8 +3,6 @@ package com.example.collegeproject.screens
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +17,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -35,17 +35,32 @@ import com.example.collegeproject.components.RadioGroupComp
 import com.example.collegeproject.components.StyledClickableTextComp
 import com.example.collegeproject.components.TextFieldComp
 import com.example.collegeproject.components.TopAppBarComp
+import com.example.collegeproject.database.UserDatabase
+import com.example.collegeproject.database.UserDatabaseDao
 import com.example.collegeproject.utils.Screen
+import com.example.collegeproject.utils.ValidationError
 import com.example.collegeproject.viewmodels.SignUpViewModel
+import com.example.collegeproject.viewmodels.SignUpViewModelFactory
 
 @Composable
 fun SignUpScreen(
     modifier: Modifier = Modifier,
-    navController: NavController?
+    navController: NavController?,
+    userDatabaseDao: UserDatabaseDao?
 ) {
-    val signUpViewModel: SignUpViewModel = viewModel()
+    val signUpViewModel: SignUpViewModel = viewModel(factory = SignUpViewModelFactory(userDatabaseDao!!))
+    val viewLifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
+
+    signUpViewModel.toastMessage.observe(viewLifecycleOwner) { message ->
+        if (message != "") {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            signUpViewModel.cleatToastMessage()
+        }
+    }
+
     Scaffold(
-        topBar = { TopAppBarComp(title = stringResource(id = R.string.register)) }
+        topBar = { TopAppBarComp(title = stringResource(id = R.string.sign_up)) }
     ) { padding ->
         Column(
             modifier = Modifier
@@ -68,7 +83,9 @@ fun SignUpScreen(
                     onValueChange = signUpViewModel::onBusinessNameChange,
                     leadingIcon = painterResource(
                         id = R.drawable.icon_business_name
-                    )
+                    ),
+                    isError = signUpViewModel.businessNameError != ValidationError.NONE,
+                    errorType = signUpViewModel.businessNameError
                 )
                 TextFieldComp(
                     textInput = signUpViewModel.businessAddress,
@@ -95,7 +112,9 @@ fun SignUpScreen(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     leadingIcon = painterResource(
                         id = R.drawable.icon_email
-                    )
+                    ),
+                    isError = signUpViewModel.emailError != ValidationError.NONE,
+                    errorType = signUpViewModel.emailError
                 )
                 TextFieldComp(
                     textInput = signUpViewModel.phoneNumber,
@@ -110,24 +129,27 @@ fun SignUpScreen(
                 )
                 PasswordTextFieldComp(
                     passwordText = signUpViewModel.password,
-                    onPasswordChange = signUpViewModel::onPasswordChange
+                    onPasswordChange = signUpViewModel::onPasswordChange,
+                    isError = signUpViewModel.passwordError != ValidationError.NONE,
+                    errorType = signUpViewModel.passwordError
                 )
                 RadioGroupComp(
                     options = listOf("Buyer", "Seller"),
                     label = "User Type:",
                     selectedOption = signUpViewModel.userType,
-                    onOptionSelectChange = signUpViewModel::onUserTypeChange
+                    onOptionSelectChange = signUpViewModel::onUserTypeChange,
+                    isError = signUpViewModel.userTypeError != ValidationError.NONE
                 )
                 PrimaryButtonComp(
                     modifier = Modifier
                         .padding(top = 8.dp)
                         .align(Alignment.CenterHorizontally),
-                    text = stringResource(id = R.string.register)
+                    text = stringResource(id = R.string.sign_up)
                 ) {
-                    Log.d("SignUpScreen", signUpViewModel.toMap().toString())
+                    signUpViewModel.onSignUpClickEvent()
                 }
                 StyledClickableTextComp(infoText = "Already a user? ", actionText = "Login") {
-                    navController?.navigate(Screen.Login.route)
+                    navController?.navigateUp()
                 }
             }
         }
@@ -137,5 +159,5 @@ fun SignUpScreen(
 @Preview
 @Composable
 fun SignUpScreenPreview() {
-    SignUpScreen(navController = null)
+    SignUpScreen(navController = null, userDatabaseDao = null)
 }

@@ -9,6 +9,7 @@ import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +25,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.collegeproject.R
+import com.example.collegeproject.utils.ValidationError
 
 @Composable
 fun PasswordTextFieldComp(
@@ -31,6 +33,8 @@ fun PasswordTextFieldComp(
     passwordText: String,
     onPasswordChange: (String) -> Unit,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+    isError: Boolean = false,
+    errorType: ValidationError = ValidationError.NONE
 ) {
     var passwordVisibility by rememberSaveable {
         mutableStateOf(false)
@@ -38,8 +42,7 @@ fun PasswordTextFieldComp(
 
     OutlinedTextField(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp),
+            .fillMaxWidth(),
         value = passwordText,
         onValueChange = onPasswordChange,
         label = { Text(text = stringResource(id = R.string.password)) },
@@ -68,6 +71,18 @@ fun PasswordTextFieldComp(
             IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
                 Icon(imageVector = image, description)
             }
+        },
+        isError = isError,
+        supportingText = {
+            val error = when (errorType) {
+                ValidationError.EMPTY -> "Password" + errorType.errorMessage
+                else -> errorType.errorMessage
+            }
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = error,
+                color = MaterialTheme.colorScheme.error
+            )
         }
     )
 }
