@@ -8,8 +8,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.collegeproject.database.User
 import com.example.collegeproject.database.UserDatabaseDao
+import com.example.collegeproject.utils.UserPreferences
+import com.example.collegeproject.utils.UserPreferencesRepository
 import com.example.collegeproject.utils.ValidationError
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +22,7 @@ import kotlinx.coroutines.withContext
 
 class SignUpViewModel(
     private val userDatabaseDao: UserDatabaseDao,
+    private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
     private val viewModelJob = Job()
 
@@ -133,6 +137,9 @@ class SignUpViewModel(
             if (old == null) {
                 userDatabaseDao.upsertUser(user)
                 _toastMessage.postValue("Sign up was successful")
+                userPreferencesRepository.updateUserPreferences(
+                    UserPreferences(user.userId, businessName, businessAddress, ownerName, email, phoneNumber, userType)
+                )
             } else {
                 Log.d("SINGUPDB", old.toString())
                 _toastMessage.postValue("Email already used")
@@ -161,5 +168,18 @@ class SignUpViewModel(
         map["UserType"] = userType
         map["Password"] = password
         return map
+    }
+}
+
+class SignUpViewModelFactory(
+    private val dataSource: UserDatabaseDao,
+    private val userPreferencesRepository: UserPreferencesRepository
+) : ViewModelProvider.Factory {
+    @Suppress("unchecked_cast")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(SignUpViewModel::class.java)) {
+            return SignUpViewModel(dataSource, userPreferencesRepository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

@@ -1,20 +1,24 @@
 package com.example.collegeproject
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.datastore.preferences.preferencesDataStore
 import com.example.collegeproject.app.BillOrganizerApp
 import com.example.collegeproject.database.UserDatabase
 import com.example.collegeproject.ui.theme.CollegeProjectTheme
+import com.example.collegeproject.utils.Constants
+import com.example.collegeproject.utils.UserPreferencesRepository
 
 class MainActivity : ComponentActivity() {
+    private val Context.dataStore by preferencesDataStore(
+        name = Constants.USER_PREFERENCE
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -25,7 +29,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val userDatabase = UserDatabase.getInstance(applicationContext)
-                    BillOrganizerApp(userDatabase.userDatabaseDao)
+                    val userPreferencesRepository = UserPreferencesRepository(dataStore)
+                    BillOrganizerApp(userDatabase.userDatabaseDao, userPreferencesRepository)
                 }
             }
         }

@@ -7,17 +7,22 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.collegeproject.database.User
 import com.example.collegeproject.database.UserDatabaseDao
+import com.example.collegeproject.utils.UserPreferences
+import com.example.collegeproject.utils.UserPreferencesRepository
 import com.example.collegeproject.utils.ValidationError
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class LoginViewModel(
-    val userDatabaseDao: UserDatabaseDao
+    private val userDatabaseDao: UserDatabaseDao,
+    private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
     private val viewModelJob = Job()
 
@@ -76,7 +81,22 @@ class LoginViewModel(
         uiScope.launch {
             val user = getUser()
             if (user != null) {
-                if (user.password == password) _toastMessage.value = "Login successful"
+                if (user.password == password) {
+                    _toastMessage.value = "Login successful"
+                    withContext(Dispatchers.IO) {
+                        userPreferencesRepository.updateUserPreferences(
+                            UserPreferences(
+                                user.userId,
+                                user.businessName,
+                                user.businessAddress,
+                                user.ownerName,
+                                user.emailId,
+                                user.phoneNumber,
+                                user.userType
+                            )
+                        )
+                    }
+                }
                 else passwordError = ValidationError.WRONG_PASSWORD
             } else {
                 _toastMessage.value = "Credentials wrong"
@@ -109,5 +129,18 @@ class LoginViewModel(
 
     fun clearToastMessage() {
         _toastMessage.value = ""
+    }
+}
+
+class LoginViewModelFactory(
+    private val dataSource: UserDatabaseDao,
+    private val userPreferencesRepository: UserPreferencesRepository
+) : ViewModelProvider.Factory {
+    @Suppress("unchecked_cast")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
+            return LoginViewModel(dataSource, userPreferencesRepository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

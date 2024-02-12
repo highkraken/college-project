@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.collegeproject.R
@@ -35,6 +36,7 @@ import com.example.collegeproject.components.TopAppBarComp
 import com.example.collegeproject.database.UserDatabase
 import com.example.collegeproject.database.UserDatabaseDao
 import com.example.collegeproject.utils.Screen
+import com.example.collegeproject.utils.UserPreferencesRepository
 import com.example.collegeproject.utils.ValidationError
 import com.example.collegeproject.viewmodels.LoginViewModel
 import com.example.collegeproject.viewmodels.LoginViewModelFactory
@@ -43,10 +45,12 @@ import com.example.collegeproject.viewmodels.LoginViewModelFactory
 fun LoginScreen(
     modifier: Modifier = Modifier,
     navController: NavController?,
-    userDatabaseDao: UserDatabaseDao?
+    userDatabaseDao: UserDatabaseDao?,
+    userPreferencesRepository: UserPreferencesRepository?
 ) {
-    val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory(userDatabaseDao!!))
     val context = LocalContext.current
+    val viewLifecycleOwner = LocalLifecycleOwner.current
+    val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory(userDatabaseDao!!, userPreferencesRepository!!))
     val lifecycleOwner = LocalLifecycleOwner.current
     loginViewModel.toastMessage.observe(lifecycleOwner) { toastMessage ->
         if (toastMessage != "") {
@@ -54,6 +58,8 @@ fun LoginScreen(
             loginViewModel.clearToastMessage()
         }
     }
+
+    val userPreferencesLiveData = userPreferencesRepository.userPreferencesFlow.asLiveData()
     Scaffold(
         topBar = { TopAppBarComp(title = stringResource(id = R.string.login)) }
     ) { padding ->
@@ -95,6 +101,11 @@ fun LoginScreen(
                     text = stringResource(id = R.string.login)
                 ) {
                     loginViewModel.onLoginClickEvent()
+                    userPreferencesLiveData.observe(viewLifecycleOwner) { userPreferences ->
+                        if (userPreferences.userId != 0L) {
+                            Log.d("PREFS", userPreferences.toString())
+                        }
+                    }
                 }
                 StyledClickableTextComp(infoText = "Not a user? ", actionText = "Sign Up") {
                     loginViewModel.onSignUpClickEvent()
@@ -113,5 +124,5 @@ fun LoginScreen(
 @Preview
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen(navController = null, userDatabaseDao = null)
+    LoginScreen(navController = null, userDatabaseDao = null, userPreferencesRepository = null)
 }

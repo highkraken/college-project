@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.collegeproject.R
@@ -35,9 +36,8 @@ import com.example.collegeproject.components.RadioGroupComp
 import com.example.collegeproject.components.StyledClickableTextComp
 import com.example.collegeproject.components.TextFieldComp
 import com.example.collegeproject.components.TopAppBarComp
-import com.example.collegeproject.database.UserDatabase
 import com.example.collegeproject.database.UserDatabaseDao
-import com.example.collegeproject.utils.Screen
+import com.example.collegeproject.utils.UserPreferencesRepository
 import com.example.collegeproject.utils.ValidationError
 import com.example.collegeproject.viewmodels.SignUpViewModel
 import com.example.collegeproject.viewmodels.SignUpViewModelFactory
@@ -46,9 +46,10 @@ import com.example.collegeproject.viewmodels.SignUpViewModelFactory
 fun SignUpScreen(
     modifier: Modifier = Modifier,
     navController: NavController?,
-    userDatabaseDao: UserDatabaseDao?
+    userDatabaseDao: UserDatabaseDao?,
+    userPreferencesRepository: UserPreferencesRepository?
 ) {
-    val signUpViewModel: SignUpViewModel = viewModel(factory = SignUpViewModelFactory(userDatabaseDao!!))
+    val signUpViewModel: SignUpViewModel = viewModel(factory = SignUpViewModelFactory(userDatabaseDao!!, userPreferencesRepository!!))
     val viewLifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
@@ -58,6 +59,8 @@ fun SignUpScreen(
             signUpViewModel.cleatToastMessage()
         }
     }
+
+    val userPreferencesLiveData = userPreferencesRepository.userPreferencesFlow.asLiveData()
 
     Scaffold(
         topBar = { TopAppBarComp(title = stringResource(id = R.string.sign_up)) }
@@ -147,6 +150,11 @@ fun SignUpScreen(
                     text = stringResource(id = R.string.sign_up)
                 ) {
                     signUpViewModel.onSignUpClickEvent()
+                    userPreferencesLiveData.observe(viewLifecycleOwner) { userPreferences ->
+                        if (userPreferences.userId != 0L) {
+                            Log.d("PREFS", userPreferences.toString())
+                        }
+                    }
                 }
                 StyledClickableTextComp(infoText = "Already a user? ", actionText = "Login") {
                     navController?.navigateUp()
@@ -159,5 +167,5 @@ fun SignUpScreen(
 @Preview
 @Composable
 fun SignUpScreenPreview() {
-    SignUpScreen(navController = null, userDatabaseDao = null)
+    SignUpScreen(navController = null, userDatabaseDao = null, userPreferencesRepository = null)
 }
