@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -31,10 +32,12 @@ fun HomeTileComp(
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .clickable { onClick() }
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onClick() }
+                .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -44,7 +47,8 @@ fun HomeTileComp(
                 modifier = Modifier
                     .height(50.dp)
                     .width(50.dp),
-                contentScale = ContentScale.FillBounds
+                contentScale = ContentScale.FillBounds,
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
             )
             Text(
                 text = title,

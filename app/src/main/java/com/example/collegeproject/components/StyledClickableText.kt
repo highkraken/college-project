@@ -23,7 +23,14 @@ fun StyledClickableTextComp(
     onActionClick: () -> Unit,
 ) {
     val text = buildAnnotatedString {
-        append(infoText)
+        withStyle(
+            SpanStyle(
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        ) {
+            pushStringAnnotation(tag = infoText, annotation = infoText)
+            append(infoText)
+        }
         withStyle(
             SpanStyle(
                 color = MaterialTheme.colorScheme.primary,

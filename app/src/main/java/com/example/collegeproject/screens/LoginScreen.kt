@@ -55,6 +55,12 @@ fun LoginScreen(
     loginViewModel.toastMessage.observe(lifecycleOwner) { toastMessage ->
         if (toastMessage != "") {
             Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
+            navController!!.navigate(Screen.Home.route) {
+                popUpTo(Screen.Login.route) {
+                    inclusive = true
+                }
+            }
+            loginViewModel.onLoginClickEventOver()
             loginViewModel.clearToastMessage()
         }
     }
