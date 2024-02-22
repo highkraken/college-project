@@ -9,19 +9,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.collegeproject.database.User
-import com.example.collegeproject.database.UserDatabaseDao
+import com.example.collegeproject.database.UserDao
 import com.example.collegeproject.utils.UserPreferences
 import com.example.collegeproject.utils.UserPreferencesRepository
 import com.example.collegeproject.utils.ValidationError
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class LoginViewModel(
-    private val userDatabaseDao: UserDatabaseDao,
+    private val userDao: UserDao,
     private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
     private val viewModelJob = Job()
@@ -115,7 +114,7 @@ class LoginViewModel(
 
     private suspend fun getUser(): User? {
         return withContext(Dispatchers.IO) {
-            userDatabaseDao.getUserByEmail(email)
+            userDao.getUserByEmail(email)
         }
     }
 
@@ -133,7 +132,7 @@ class LoginViewModel(
 }
 
 class LoginViewModelFactory(
-    private val dataSource: UserDatabaseDao,
+    private val dataSource: UserDao,
     private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")

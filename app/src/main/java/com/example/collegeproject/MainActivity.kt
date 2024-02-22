@@ -10,7 +10,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.collegeproject.app.BillOrganizerApp
-import com.example.collegeproject.database.UserDatabase
+import com.example.collegeproject.database.MasterDatabase
 import com.example.collegeproject.ui.theme.CollegeProjectTheme
 import com.example.collegeproject.utils.Constants
 import com.example.collegeproject.utils.UserPreferencesRepository
@@ -28,9 +28,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val userDatabase = UserDatabase.getInstance(applicationContext)
+                    val masterDatabase = MasterDatabase.getInstance(applicationContext)
                     val userPreferencesRepository = UserPreferencesRepository(dataStore)
-                    BillOrganizerApp(userDatabase.userDatabaseDao, userPreferencesRepository)
+                    BillOrganizerApp(masterDatabase.userDao, userPreferencesRepository)
                 }
             }
         }

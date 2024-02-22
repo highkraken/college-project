@@ -6,7 +6,7 @@ import androidx.room.Query
 import androidx.room.Upsert
 
 @Dao
-interface UserDatabaseDao {
+interface UserDao {
     @Upsert
     fun upsertUser(user: User)
 
@@ -18,4 +18,7 @@ interface UserDatabaseDao {
 
     @Query("SELECT * FROM user_table WHERE email_id LIKE :email")
     fun getUserByEmail(email: String): User?
+
+    @Query("SELECT * FROM user_table WHERE user_type LIKE :userType")
+    fun getUsersByType(userType: String): LiveData<List<User>>
 }

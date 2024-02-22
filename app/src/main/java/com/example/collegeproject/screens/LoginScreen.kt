@@ -33,11 +33,11 @@ import com.example.collegeproject.components.PrimaryButtonComp
 import com.example.collegeproject.components.StyledClickableTextComp
 import com.example.collegeproject.components.TextFieldComp
 import com.example.collegeproject.components.TopAppBarComp
-import com.example.collegeproject.database.UserDatabase
-import com.example.collegeproject.database.UserDatabaseDao
+import com.example.collegeproject.database.UserDao
 import com.example.collegeproject.utils.Screen
 import com.example.collegeproject.utils.UserPreferencesRepository
 import com.example.collegeproject.utils.ValidationError
+import com.example.collegeproject.utils.navigateWithPop
 import com.example.collegeproject.viewmodels.LoginViewModel
 import com.example.collegeproject.viewmodels.LoginViewModelFactory
 
@@ -45,22 +45,22 @@ import com.example.collegeproject.viewmodels.LoginViewModelFactory
 fun LoginScreen(
     modifier: Modifier = Modifier,
     navController: NavController?,
-    userDatabaseDao: UserDatabaseDao?,
+    userDao: UserDao?,
     userPreferencesRepository: UserPreferencesRepository?
 ) {
     val context = LocalContext.current
     val viewLifecycleOwner = LocalLifecycleOwner.current
-    val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory(userDatabaseDao!!, userPreferencesRepository!!))
+    val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory(userDao!!, userPreferencesRepository!!))
     val lifecycleOwner = LocalLifecycleOwner.current
     loginViewModel.toastMessage.observe(lifecycleOwner) { toastMessage ->
         if (toastMessage != "") {
             Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
-            navController!!.navigate(Screen.Home.route) {
-                popUpTo(Screen.Login.route) {
-                    inclusive = true
-                }
-            }
-            loginViewModel.onLoginClickEventOver()
+//            navController!!.navigate(Screen.Home.route) {
+//                popUpTo(Screen.Login.route) {
+//                    inclusive = true
+//                }
+//            }
+//            loginViewModel.onLoginClickEventOver()
             loginViewModel.clearToastMessage()
         }
     }
@@ -108,7 +108,11 @@ fun LoginScreen(
                 ) {
                     loginViewModel.onLoginClickEvent()
                     userPreferencesLiveData.observe(viewLifecycleOwner) { userPreferences ->
-                        if (userPreferences.userId != 0L) {
+                        if (userPreferences.userType == "Admin") {
+                            navController?.navigateWithPop(Screen.Admin.route, Screen.Login.route)
+                            Log.d("PREFS", userPreferences.toString())
+                        } else if (userPreferences.userType != "") {
+                            navController?.navigateWithPop(Screen.Home.route.replace("{userType}", userPreferences.userType), Screen.Login.route)
                             Log.d("PREFS", userPreferences.toString())
                         }
                     }
@@ -130,5 +134,5 @@ fun LoginScreen(
 @Preview
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen(navController = null, userDatabaseDao = null, userPreferencesRepository = null)
+    LoginScreen(navController = null, userDao = null, userPreferencesRepository = null)
 }

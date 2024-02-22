@@ -17,12 +17,17 @@ import androidx.navigation.NavController
 import com.example.collegeproject.R
 import com.example.collegeproject.utils.Screen
 import com.example.collegeproject.utils.UserPreferencesRepository
+import com.example.collegeproject.utils.navigateWithPop
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 @Composable
-fun SplashScreen(modifier: Modifier = Modifier, userPreferencesRepository: UserPreferencesRepository, navController: NavController) {
+fun SplashScreen(
+    modifier: Modifier = Modifier,
+    userPreferencesRepository: UserPreferencesRepository,
+    navController: NavController,
+) {
     val userType = MutableLiveData("")
     val lifecycleOwner = LocalLifecycleOwner.current
     LaunchedEffect(key1 = true) {
@@ -32,17 +37,16 @@ fun SplashScreen(modifier: Modifier = Modifier, userPreferencesRepository: UserP
         delay(700)
         userType.observe(lifecycleOwner) { type ->
             if (type?.isNotEmpty() == true) {
-                navController.navigate(Screen.Home.route) {
-                    popUpTo(Screen.Splash.route) {
-                        inclusive = true
-                    }
+                if (type == "Admin") {
+                    navController.navigateWithPop(Screen.Admin.route, Screen.Splash.route)
+                } else {
+                    navController.navigateWithPop(
+                        Screen.Home.route.replace("{userType}", type),
+                        Screen.Splash.route
+                    )
                 }
             } else {
-                navController.navigate(Screen.Login.route) {
-                    popUpTo(Screen.Splash.route) {
-                        inclusive = true
-                    }
-                }
+                navController.navigateWithPop(Screen.Login.route, Screen.Splash.route)
             }
         }
     }

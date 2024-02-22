@@ -36,7 +36,7 @@ import com.example.collegeproject.components.RadioGroupComp
 import com.example.collegeproject.components.StyledClickableTextComp
 import com.example.collegeproject.components.TextFieldComp
 import com.example.collegeproject.components.TopAppBarComp
-import com.example.collegeproject.database.UserDatabaseDao
+import com.example.collegeproject.database.UserDao
 import com.example.collegeproject.utils.UserPreferencesRepository
 import com.example.collegeproject.utils.ValidationError
 import com.example.collegeproject.viewmodels.SignUpViewModel
@@ -46,10 +46,10 @@ import com.example.collegeproject.viewmodels.SignUpViewModelFactory
 fun SignUpScreen(
     modifier: Modifier = Modifier,
     navController: NavController?,
-    userDatabaseDao: UserDatabaseDao?,
+    userDao: UserDao?,
     userPreferencesRepository: UserPreferencesRepository?
 ) {
-    val signUpViewModel: SignUpViewModel = viewModel(factory = SignUpViewModelFactory(userDatabaseDao!!, userPreferencesRepository!!))
+    val signUpViewModel: SignUpViewModel = viewModel(factory = SignUpViewModelFactory(userDao!!, userPreferencesRepository!!))
     val viewLifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
@@ -167,5 +167,5 @@ fun SignUpScreen(
 @Preview
 @Composable
 fun SignUpScreenPreview() {
-    SignUpScreen(navController = null, userDatabaseDao = null, userPreferencesRepository = null)
+    SignUpScreen(navController = null, userDao = null, userPreferencesRepository = null)
 }

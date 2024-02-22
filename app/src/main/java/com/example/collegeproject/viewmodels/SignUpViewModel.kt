@@ -10,7 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.collegeproject.database.User
-import com.example.collegeproject.database.UserDatabaseDao
+import com.example.collegeproject.database.UserDao
 import com.example.collegeproject.utils.UserPreferences
 import com.example.collegeproject.utils.UserPreferencesRepository
 import com.example.collegeproject.utils.ValidationError
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class SignUpViewModel(
-    private val userDatabaseDao: UserDatabaseDao,
+    private val userDao: UserDao,
     private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModel() {
     private val viewModelJob = Job()
@@ -133,9 +133,9 @@ class SignUpViewModel(
 
     private suspend fun insertUser(user: User) {
         return withContext(Dispatchers.IO) {
-            val old = userDatabaseDao.getUserByEmail(email)
+            val old = userDao.getUserByEmail(email)
             if (old == null) {
-                userDatabaseDao.upsertUser(user)
+                userDao.upsertUser(user)
                 _toastMessage.postValue("Sign up was successful")
                 userPreferencesRepository.updateUserPreferences(
                     UserPreferences(user.userId, businessName, businessAddress, ownerName, email, phoneNumber, userType)
@@ -172,7 +172,7 @@ class SignUpViewModel(
 }
 
 class SignUpViewModelFactory(
-    private val dataSource: UserDatabaseDao,
+    private val dataSource: UserDao,
     private val userPreferencesRepository: UserPreferencesRepository
 ) : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")

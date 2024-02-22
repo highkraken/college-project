@@ -2,40 +2,42 @@ package com.example.collegeproject.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.collegeproject.R
-import com.example.collegeproject.components.HeaderTextComp
 import com.example.collegeproject.components.HomeTileComp
 import com.example.collegeproject.components.TopAppBarComp
+import com.example.collegeproject.database.UserDao
 import com.example.collegeproject.utils.Screen
-import com.example.collegeproject.utils.UserPreferences
 import com.example.collegeproject.utils.UserPreferencesRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.example.collegeproject.utils.navigateWithPop
+import com.example.collegeproject.viewmodels.HomeViewModel
+import com.example.collegeproject.viewmodels.HomeViewModelFactory
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     navController: NavController?,
+    userDao: UserDao?,
     userPreferencesRepository: UserPreferencesRepository?,
+    userType: String,
 ) {
+    val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModelFactory(userDao!!, userPreferencesRepository!!))
+    val getType = if (userType == "Sellers") "Buyer" else "Seller"
     Scaffold(
         topBar = { TopAppBarComp(title = "Home") },
-
         ) { padding ->
         Column(
             modifier = modifier
@@ -44,7 +46,7 @@ fun HomeScreen(
                 .padding(padding)
         ) {
             HomeTileComp(
-                title = "Sellers",
+                title = userType,
                 leadingIcon = painterResource(id = R.drawable.icon_owner_name)
             )
             HomeTileComp(
@@ -55,16 +57,8 @@ fun HomeScreen(
                 title = "Logout",
                 leadingIcon = painterResource(id = R.drawable.icon_logout),
                 onClick = {
-                    navController?.navigate(Screen.Login.route) {
-                        popUpTo(Screen.Home.route) {
-                            inclusive = true
-                        }
-                    }
-                    CoroutineScope(Dispatchers.IO).launch {
-                        userPreferencesRepository?.updateUserPreferences(
-                            UserPreferences()
-                        )
-                    }
+                    navController?.navigateWithPop(Screen.Login.route, Screen.Home.route)
+                    homeViewModel.clearUserPreferences()
                 }
             )
         }
@@ -74,5 +68,5 @@ fun HomeScreen(
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(navController = null, userPreferencesRepository = null)
+    HomeScreen(navController = null, userPreferencesRepository = null, userType = "Seller", userDao = null)
 }
