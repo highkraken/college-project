@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Mail
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -18,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -90,7 +91,7 @@ fun LoginScreen(
                     textInput = loginViewModel.email,
                     labelText = stringResource(id = R.string.email),
                     onValueChange = loginViewModel::onEmailChange,
-                    leadingIcon = painterResource(id = R.drawable.icon_email),
+                    leadingIcon = Icons.Outlined.Mail,
                     isError = loginViewModel.emailError != ValidationError.NONE,
                     errorType = loginViewModel.emailError
                 )

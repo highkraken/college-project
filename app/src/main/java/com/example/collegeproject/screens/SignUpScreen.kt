@@ -12,6 +12,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Business
+import androidx.compose.material.icons.outlined.BusinessCenter
+import androidx.compose.material.icons.outlined.Mail
+import androidx.compose.material.icons.outlined.Person3
+import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -19,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -84,9 +89,7 @@ fun SignUpScreen(
                     textInput = signUpViewModel.businessName,
                     labelText = stringResource(id = R.string.business_name),
                     onValueChange = signUpViewModel::onBusinessNameChange,
-                    leadingIcon = painterResource(
-                        id = R.drawable.icon_business_name
-                    ),
+                    leadingIcon = Icons.Outlined.BusinessCenter,
                     isError = signUpViewModel.businessNameError != ValidationError.NONE,
                     errorType = signUpViewModel.businessNameError
                 )
@@ -96,26 +99,20 @@ fun SignUpScreen(
                     onValueChange = signUpViewModel::onBusinessAddressChange,
                     minLines = 3,
                     maxLines = 5,
-                    leadingIcon = painterResource(
-                        id = R.drawable.icon_business_address
-                    )
+                    leadingIcon = Icons.Outlined.Business
                 )
                 TextFieldComp(
                     textInput = signUpViewModel.ownerName,
                     labelText = stringResource(id = R.string.owner_name),
                     onValueChange = signUpViewModel::onOwnerNameChange,
-                    leadingIcon = painterResource(
-                        id = R.drawable.icon_owner_name
-                    )
+                    leadingIcon = Icons.Outlined.Person3
                 )
                 TextFieldComp(
                     textInput = signUpViewModel.email,
                     labelText = stringResource(id = R.string.email),
                     onValueChange = signUpViewModel::onEmailChange,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                    leadingIcon = painterResource(
-                        id = R.drawable.icon_email
-                    ),
+                    leadingIcon = Icons.Outlined.Mail,
                     isError = signUpViewModel.emailError != ValidationError.NONE,
                     errorType = signUpViewModel.emailError
                 )
@@ -125,9 +122,7 @@ fun SignUpScreen(
                     onValueChange = signUpViewModel::onPhoneNumberChange,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                     maxLength = 10,
-                    leadingIcon = painterResource(
-                        id = R.drawable.icon_phone
-                    ),
+                    leadingIcon = Icons.Outlined.Phone,
                     isPhoneField = true
                 )
                 PasswordTextFieldComp(

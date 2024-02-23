@@ -8,13 +8,8 @@ import androidx.compose.material.icons.automirrored.filled.Assignment
 import androidx.compose.material.icons.automirrored.filled.Login
 import androidx.compose.material.icons.automirrored.outlined.Assignment
 import androidx.compose.material.icons.automirrored.outlined.Login
-import androidx.compose.material.icons.filled.AppRegistration
-import androidx.compose.material.icons.filled.Assignment
-import androidx.compose.material.icons.filled.Assistant
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.outlined.Assignment
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Login
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -26,7 +21,8 @@ import com.example.collegeproject.database.MasterDatabase
 import com.example.collegeproject.database.UserDao
 import com.example.collegeproject.screens.HomeScreen
 import com.example.collegeproject.screens.LoginScreen
-import com.example.collegeproject.screens.SignUpScreen
+import com.example.collegeproject.screens.admin.datainput.DataInputScreen
+import com.example.collegeproject.screens.admin.datainput.ProductEntryScreen
 import com.example.collegeproject.utils.AdminBottomBarItem
 import com.example.collegeproject.utils.Screen
 import com.example.collegeproject.utils.UserPreferencesRepository
@@ -72,12 +68,13 @@ fun AdminScreen(
         ) {
             NavHost(navController = navController, startDestination = Screen.SignUp.route) {
                 composable(Screen.Home.route) {
-                    HomeScreen(
-                        navController = navController,
-                        userDao = userDao,
-                        userPreferencesRepository = userPreferencesRepository,
-                        userType = "Seller"
-                    )
+//                    HomeScreen(
+//                        navController = navController,
+//                        userDao = userDao,
+//                        userPreferencesRepository = userPreferencesRepository,
+//                        userType = "Seller"
+//                    )
+                    ProductEntryScreen(productDao = masterDatabase?.productDao)
                 }
                 composable(Screen.Login.route) {
                     LoginScreen(
