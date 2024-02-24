@@ -1,7 +1,6 @@
 package com.example.collegeproject.screens
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -15,7 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.example.collegeproject.R
-import com.example.collegeproject.utils.Screen
+import com.example.collegeproject.utils.StartupScreen
 import com.example.collegeproject.utils.UserPreferencesRepository
 import com.example.collegeproject.utils.navigateWithPop
 import kotlinx.coroutines.Dispatchers
@@ -38,15 +37,15 @@ fun SplashScreen(
         userType.observe(lifecycleOwner) { type ->
             if (type?.isNotEmpty() == true) {
                 if (type == "Admin") {
-                    navController.navigateWithPop(Screen.Admin.route, Screen.Splash.route)
+                    navController.navigateWithPop(StartupScreen.Admin.route, StartupScreen.Splash.route)
                 } else {
                     navController.navigateWithPop(
-                        Screen.Home.route.replace("{userType}", type),
-                        Screen.Splash.route
+                        StartupScreen.Home.route.replace("{userType}", type),
+                        StartupScreen.Splash.route
                     )
                 }
             } else {
-                navController.navigateWithPop(Screen.Login.route, Screen.Splash.route)
+                navController.navigateWithPop(StartupScreen.Login.route, StartupScreen.Splash.route)
             }
         }
     }

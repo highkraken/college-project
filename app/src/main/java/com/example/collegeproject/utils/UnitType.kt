@@ -15,6 +15,7 @@ enum class UnitType(val unit: String, val acronym: String) {
     METER("Meter", "Mtr"),
     MILLILITRE("Millilitre", "Ml"),
     NUMBER("Number", "Nos"),
+    PERCENT("Percent", "%"),
     PIECE("Piece", "Pcs"),
     QUINTAL("Quintal", "Qtl"),
     SQUARE_FEET("Square Feet", "Sqf");

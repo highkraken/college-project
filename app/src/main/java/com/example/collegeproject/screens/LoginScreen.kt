@@ -35,7 +35,7 @@ import com.example.collegeproject.components.StyledClickableTextComp
 import com.example.collegeproject.components.TextFieldComp
 import com.example.collegeproject.components.TopAppBarComp
 import com.example.collegeproject.database.UserDao
-import com.example.collegeproject.utils.Screen
+import com.example.collegeproject.utils.StartupScreen
 import com.example.collegeproject.utils.UserPreferencesRepository
 import com.example.collegeproject.utils.ValidationError
 import com.example.collegeproject.utils.navigateWithPop
@@ -110,10 +110,10 @@ fun LoginScreen(
                     loginViewModel.onLoginClickEvent()
                     userPreferencesLiveData.observe(viewLifecycleOwner) { userPreferences ->
                         if (userPreferences.userType == "Admin") {
-                            navController?.navigateWithPop(Screen.Admin.route, Screen.Login.route)
+                            navController?.navigateWithPop(StartupScreen.Admin.route, StartupScreen.Login.route)
                             Log.d("PREFS", userPreferences.toString())
                         } else if (userPreferences.userType != "") {
-                            navController?.navigateWithPop(Screen.Home.route.replace("{userType}", userPreferences.userType), Screen.Login.route)
+                            navController?.navigateWithPop(StartupScreen.Home.route.replace("{userType}", userPreferences.userType), StartupScreen.Login.route)
                             Log.d("PREFS", userPreferences.toString())
                         }
                     }
@@ -122,7 +122,7 @@ fun LoginScreen(
                     loginViewModel.onSignUpClickEvent()
                     loginViewModel.eventSignUpClick.observe(lifecycleOwner) { clicked ->
                         if (clicked) {
-                            navController?.navigate(Screen.SignUp.route)
+                            navController?.navigate(StartupScreen.SignUp.route)
                             loginViewModel.onSignUpClickEventOver()
                         }
                     }

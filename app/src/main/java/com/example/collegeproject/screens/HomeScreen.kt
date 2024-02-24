@@ -18,7 +18,7 @@ import com.example.collegeproject.R
 import com.example.collegeproject.components.HomeTileComp
 import com.example.collegeproject.components.TopAppBarComp
 import com.example.collegeproject.database.UserDao
-import com.example.collegeproject.utils.Screen
+import com.example.collegeproject.utils.StartupScreen
 import com.example.collegeproject.utils.UserPreferencesRepository
 import com.example.collegeproject.utils.navigateWithPop
 import com.example.collegeproject.viewmodels.HomeViewModel
@@ -57,7 +57,7 @@ fun HomeScreen(
                 title = "Logout",
                 leadingIcon = painterResource(id = R.drawable.icon_logout),
                 onClick = {
-                    navController?.navigateWithPop(Screen.Login.route, Screen.Home.route)
+                    navController?.navigateWithPop(StartupScreen.Login.route, StartupScreen.Home.route)
                     homeViewModel.clearUserPreferences()
                 }
             )

@@ -24,7 +24,7 @@ import com.example.collegeproject.screens.LoginScreen
 import com.example.collegeproject.screens.admin.datainput.DataInputScreen
 import com.example.collegeproject.screens.admin.datainput.ProductEntryScreen
 import com.example.collegeproject.utils.AdminBottomBarItem
-import com.example.collegeproject.utils.Screen
+import com.example.collegeproject.utils.StartupScreen
 import com.example.collegeproject.utils.UserPreferencesRepository
 
 @Composable
@@ -40,19 +40,19 @@ fun AdminScreen(
             label = "Data Input",
             selectedIcon = Icons.AutoMirrored.Filled.Assignment,
             unselectedIcon = Icons.AutoMirrored.Outlined.Assignment,
-            route = Screen.SignUp.route
+            route = StartupScreen.SignUp.route
         ),
         AdminBottomBarItem(
-            label = "Login",
+            label = "Add Product",
             selectedIcon = Icons.AutoMirrored.Filled.Login,
             unselectedIcon = Icons.AutoMirrored.Outlined.Login,
-            route = Screen.Login.route
+            route = StartupScreen.Login.route
         ),
         AdminBottomBarItem(
             label = "Home",
             selectedIcon = Icons.Filled.Home,
             unselectedIcon = Icons.Outlined.Home,
-            route = Screen.Home.route
+            route = StartupScreen.Home.route
         )
     )
     val navController = rememberNavController()
@@ -66,8 +66,8 @@ fun AdminScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            NavHost(navController = navController, startDestination = Screen.SignUp.route) {
-                composable(Screen.Home.route) {
+            NavHost(navController = navController, startDestination = StartupScreen.SignUp.route) {
+                composable(StartupScreen.Login.route) {
 //                    HomeScreen(
 //                        navController = navController,
 //                        userDao = userDao,
@@ -76,14 +76,20 @@ fun AdminScreen(
 //                    )
                     ProductEntryScreen(productDao = masterDatabase?.productDao)
                 }
-                composable(Screen.Login.route) {
-                    LoginScreen(
-                        navController = null,
+                composable(StartupScreen.Home.route) {
+                    HomeScreen(
+                        navController = navController,
                         userDao = userDao,
-                        userPreferencesRepository = userPreferencesRepository
+                        userPreferencesRepository = userPreferencesRepository,
+                        userType = "Seller"
                     )
+//                    LoginScreen(
+//                        navController = null,
+//                        userDao = userDao,
+//                        userPreferencesRepository = userPreferencesRepository
+//                    )
                 }
-                composable(Screen.SignUp.route) {
+                composable(StartupScreen.SignUp.route) {
                     DataInputScreen(
 //                        navController = null,
 //                        userDao = userDao,
