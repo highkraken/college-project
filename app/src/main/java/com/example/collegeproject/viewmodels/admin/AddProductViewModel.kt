@@ -210,7 +210,6 @@ class AddProductViewModel(
 @Suppress("UNCHECKED_CAST")
 class AddProductViewModelFactory(
     private val dataSource: ProductDao,
-//    private val userPreferencesRepository: UserPreferencesRepository,
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(AddProductViewModel::class.java)) {

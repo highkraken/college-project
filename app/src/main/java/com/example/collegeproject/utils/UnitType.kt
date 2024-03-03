@@ -19,4 +19,8 @@ enum class UnitType(val unit: String, val acronym: String) {
     PIECE("Piece", "Pcs"),
     QUINTAL("Quintal", "Qtl"),
     SQUARE_FEET("Square Feet", "Sqf");
+
+    fun toMenuItem(): String {
+        return "${this.unit} (${this.acronym})"
+    }
 }

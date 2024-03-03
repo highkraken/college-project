@@ -20,9 +20,9 @@ import com.example.collegeproject.components.AdminBottomBar
 import com.example.collegeproject.database.MasterDatabase
 import com.example.collegeproject.database.UserDao
 import com.example.collegeproject.screens.HomeScreen
-import com.example.collegeproject.screens.LoginScreen
 import com.example.collegeproject.screens.admin.datainput.DataInputScreen
-import com.example.collegeproject.screens.admin.datainput.ProductEntryScreen
+import com.example.collegeproject.screens.admin.datainput.product.ProductEntryScreen
+import com.example.collegeproject.screens.admin.datainput.purchasesale.AddPurchaseSaleScreen
 import com.example.collegeproject.utils.AdminBottomBarItem
 import com.example.collegeproject.utils.StartupScreen
 import com.example.collegeproject.utils.UserPreferencesRepository
@@ -90,10 +90,12 @@ fun AdminScreen(
 //                    )
                 }
                 composable(StartupScreen.SignUp.route) {
-                    DataInputScreen(
-//                        navController = null,
-//                        userDao = userDao,
-//                        userPreferencesRepository = userPreferencesRepository
+                    AddPurchaseSaleScreen(
+                        purchaseSaleDao = masterDatabase?.purchaseSaleDao,
+                        userDao = masterDatabase?.userDao,
+                        productDao = masterDatabase?.productDao,
+                        sellerId = 3,
+                        productId = 0
                     )
                 }
             }

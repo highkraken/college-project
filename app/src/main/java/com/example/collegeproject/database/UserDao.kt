@@ -21,4 +21,7 @@ interface UserDao {
 
     @Query("SELECT * FROM user_table WHERE user_type LIKE :userType")
     fun getUsersByType(userType: String): LiveData<List<User>>
+
+    @Query("SELECT * FROM user_table WHERE user_id = :userId")
+    fun getUserById(userId: Long): User
 }

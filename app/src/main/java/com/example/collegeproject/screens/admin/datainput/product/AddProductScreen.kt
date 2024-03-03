@@ -1,4 +1,4 @@
-package com.example.collegeproject.screens.admin.datainput
+package com.example.collegeproject.screens.admin.datainput.product
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -134,9 +134,11 @@ fun ProductEntryScreen(
             onTypeChange = addProductViewModel::setSelectedImportFareType,
             onValueChange = addProductViewModel::onImportFareChange
         )
-        Button(onClick = addProductViewModel::onAddProductClick) {
-            Text(text = "Add Product")
+        Button(onClick = {
+            addProductViewModel.onAddProductClick()
             Toast.makeText(context, "Product added successfully!", Toast.LENGTH_SHORT).show()
+        }) {
+            Text(text = "Add Product")
         }
     }
 }

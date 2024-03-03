@@ -24,9 +24,9 @@ interface PurchaseSaleDao {
     @Delete
     fun deletePurchaseSaleEntry(purchaseSaleEntries: List<PurchaseSale>)
 
-    @Query("SELECT * FROM purchase_sell_invoice WHERE invoice_date = :date")
+    @Query("SELECT * FROM purchase_sale_invoice WHERE invoice_date = :date")
     fun getAllEntries(date: LocalDate = LocalDate.now()): LiveData<List<PurchaseSale>>
 
-    @Query("SELECT * FROM purchase_sell_invoice WHERE seller_name = :sellerName AND product_name = :productName")
-    fun getItemsOfSeller(sellerName: String, productName: String): LiveData<List<PurchaseSale>>
+    @Query("SELECT * FROM purchase_sale_invoice WHERE seller_id = :sellerId AND product_id = :productId AND invoice_date = :date")
+    fun getItemsOfSeller(sellerId: Long, productId: Long, date: LocalDate = LocalDate.now()): LiveData<List<PurchaseSale>>
 }

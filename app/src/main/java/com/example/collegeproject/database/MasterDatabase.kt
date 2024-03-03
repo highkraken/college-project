@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.collegeproject.utils.DateConverter
 
-@Database(entities = [User::class, Product::class, PurchaseSale::class], version = 2, exportSchema = false)
+@Database(entities = [User::class, Product::class, PurchaseSale::class], version = 3, exportSchema = false)
 @TypeConverters(DateConverter::class)
 abstract class MasterDatabase : RoomDatabase() {
     abstract val userDao: UserDao

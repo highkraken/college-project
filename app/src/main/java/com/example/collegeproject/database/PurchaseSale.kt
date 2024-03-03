@@ -5,10 +5,11 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.example.collegeproject.utils.PriceType
 import java.time.LocalDate
 
 @Entity(
-    tableName = "purchase_sell_invoice",
+    tableName = "purchase_sale_invoice",
     foreignKeys = [
         ForeignKey(
             entity = User::class,
@@ -52,6 +53,9 @@ data class PurchaseSale(
 
     @Embedded
     val product: Product,
+
+    @ColumnInfo("price_type")
+    val priceType: PriceType,
 
     @ColumnInfo("product_price")
     val productPrice: Float,
