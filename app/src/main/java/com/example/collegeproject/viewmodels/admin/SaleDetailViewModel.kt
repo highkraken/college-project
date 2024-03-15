@@ -4,11 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.example.collegeproject.database.PurchaseSaleDao
 import com.example.collegeproject.database.UserDao
-import com.example.collegeproject.model.PurchaseProductResult
 import com.example.collegeproject.model.SaleProductResult
 import com.example.collegeproject.utils.sumOf
 import kotlinx.coroutines.CoroutineScope
@@ -17,30 +15,23 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
-class PurchaseDetailViewModel(
+class SaleDetailViewModel(
     private val purchaseSaleDao: PurchaseSaleDao,
     private val userDao: UserDao,
-    private val sellerId: Long
+    private val buyerId: Long
 ) : ViewModel() {
     private val viewModelJob = Job()
 
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    var sellerName: String = ""
+    var buyerName: String = ""
         private set
 
     var date: LocalDate = LocalDate.parse("2024-03-04")
         private set
 
-    var commission = 0f
-        private set
-
     var labour = 0f
-        private set
-
-    var importFare = 0f
         private set
 
     var extraExpense = 0f
@@ -55,8 +46,8 @@ class PurchaseDetailViewModel(
     var grandTotal = 0f
         private set
 
-    private val _products = MutableLiveData<List<PurchaseProductResult>>()
-    val products: LiveData<List<PurchaseProductResult>>
+    private val _products = MutableLiveData<List<SaleProductResult>>()
+    val products: LiveData<List<SaleProductResult>>
         get() = _products
 
     init {
@@ -65,9 +56,9 @@ class PurchaseDetailViewModel(
 
     private fun fetchData() {
         viewModelScope.launch(Dispatchers.IO) {
-            sellerName = userDao.getUserById(sellerId).ownerName
+            buyerName = userDao.getUserById(buyerId).ownerName
             withContext(Dispatchers.Main) {
-                purchaseSaleDao.getProductsOfSeller(sellerId, date).observeForever { productResult ->
+                purchaseSaleDao.getProductsOfBuyer(buyerId, date).observeForever { productResult ->
                     _products.postValue(productResult)
                     calculateExpenses(productResult)
                 }
@@ -75,29 +66,31 @@ class PurchaseDetailViewModel(
         }
     }
 
-    private fun calculateExpenses(products: List<PurchaseProductResult>) {
-        commission = products.sumOf { it.commissionValue }
+    private fun calculateExpenses(products: List<SaleProductResult>) {
         labour = products.sumOf { it.labourValue }
         extraExpense = products.sumOf { it.extraExpenseValue }
-        importFare = products.sumOf { it.importFareValue }
         total = products.sumOf { it.productTotal }
-        totalAfterExpenses = commission + labour + extraExpense + importFare
-        grandTotal = total - totalAfterExpenses
+        totalAfterExpenses = labour + extraExpense
+        grandTotal = total + totalAfterExpenses
     }
 }
 
+//private fun <T> Iterable<T>.sumOf(function: () -> Float): Float {
+//    return this.sumOf {  }
+//}
+
 @Suppress("UNCHECKED_CAST")
-class PurchaseDetailViewModelFactory(
+class SaleDetailViewModelFactory(
     private val purchaseSaleDao: PurchaseSaleDao,
     private val userDao: UserDao,
-    private val sellerId: Long
+    private val buyerId: Long
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(PurchaseDetailViewModel::class.java)) {
-            return PurchaseDetailViewModel(
+        if (modelClass.isAssignableFrom(SaleDetailViewModel::class.java)) {
+            return SaleDetailViewModel(
                 purchaseSaleDao,
                 userDao,
-                sellerId
+                buyerId
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

@@ -8,6 +8,7 @@ import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
 import com.example.collegeproject.model.PurchaseProductResult
+import com.example.collegeproject.model.SaleProductResult
 import java.time.LocalDate
 
 @Dao
@@ -38,4 +39,12 @@ interface PurchaseSaleDao {
             "GROUP BY product_id, product_price " +
             "ORDER BY product_price DESC, product_name ASC")
     fun getProductsOfSeller(sellerId: Long, date: LocalDate = LocalDate.now()): LiveData<List<PurchaseProductResult>>
+
+    @Query("SELECT product_id AS productId, SUM(product_unit) AS productUnit, product_name AS productName, SUM(product_quantity) AS productQuantity, " +
+            "product_price AS productPrice, SUM(product_total) AS productTotal, s_wage AS labour, s_wage_type AS labourType, " +
+            "s_extra_expense AS extraExpense, s_extra_expense_type AS extraExpenseType FROM purchase_sale_invoice " +
+            "WHERE buyer_id = :buyerId AND invoice_date = :date " +
+            "GROUP BY product_id, product_price " +
+            "ORDER BY product_price DESC, product_name ASC")
+    fun getProductsOfBuyer(buyerId: Long, date: LocalDate = LocalDate.now()): LiveData<List<SaleProductResult>>
 }

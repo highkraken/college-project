@@ -8,6 +8,7 @@ import androidx.compose.material.icons.automirrored.filled.Assignment
 import androidx.compose.material.icons.automirrored.filled.Login
 import androidx.compose.material.icons.automirrored.outlined.Assignment
 import androidx.compose.material.icons.automirrored.outlined.Login
+import androidx.compose.material.icons.filled.Assignment
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.Scaffold
@@ -24,6 +25,7 @@ import com.example.collegeproject.screens.admin.datainput.DataInputScreen
 import com.example.collegeproject.screens.admin.datainput.product.ProductEntryScreen
 import com.example.collegeproject.screens.admin.datainput.purchase.PurchaseDetailScreen
 import com.example.collegeproject.screens.admin.datainput.purchasesale.AddPurchaseSaleScreen
+import com.example.collegeproject.screens.admin.datainput.sale.SaleDetailScreen
 import com.example.collegeproject.utils.AdminBottomBarItem
 import com.example.collegeproject.utils.StartupScreen
 import com.example.collegeproject.utils.UserPreferencesRepository
@@ -44,7 +46,7 @@ fun AdminScreen(
             route = StartupScreen.SignUp.route
         ),
         AdminBottomBarItem(
-            label = "Add Product",
+            label = "Seller Invoice",
             selectedIcon = Icons.AutoMirrored.Filled.Login,
             unselectedIcon = Icons.AutoMirrored.Outlined.Login,
             route = StartupScreen.Login.route
@@ -54,6 +56,12 @@ fun AdminScreen(
             selectedIcon = Icons.Filled.Home,
             unselectedIcon = Icons.Outlined.Home,
             route = StartupScreen.Home.route
+        ),
+        AdminBottomBarItem(
+            label = "Buyer Invoice",
+            selectedIcon = Icons.AutoMirrored.Filled.Assignment,
+            unselectedIcon = Icons.AutoMirrored.Outlined.Assignment,
+            route = StartupScreen.Admin.route
         )
     )
     val navController = rememberNavController()
@@ -68,6 +76,14 @@ fun AdminScreen(
                 .padding(paddingValues)
         ) {
             NavHost(navController = navController, startDestination = StartupScreen.SignUp.route) {
+                composable(StartupScreen.Admin.route) {
+                    SaleDetailScreen(
+                        buyerId = 8,
+                        purchaseSaleDao = masterDatabase?.purchaseSaleDao,
+                        userDao = masterDatabase?.userDao
+                    )
+                }
+
                 composable(StartupScreen.Login.route) {
 //                    HomeScreen(
 //                        navController = navController,
