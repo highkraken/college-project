@@ -22,6 +22,7 @@ import com.example.collegeproject.database.UserDao
 import com.example.collegeproject.screens.HomeScreen
 import com.example.collegeproject.screens.admin.datainput.DataInputScreen
 import com.example.collegeproject.screens.admin.datainput.product.ProductEntryScreen
+import com.example.collegeproject.screens.admin.datainput.purchase.PurchaseDetailScreen
 import com.example.collegeproject.screens.admin.datainput.purchasesale.AddPurchaseSaleScreen
 import com.example.collegeproject.utils.AdminBottomBarItem
 import com.example.collegeproject.utils.StartupScreen
@@ -74,7 +75,14 @@ fun AdminScreen(
 //                        userPreferencesRepository = userPreferencesRepository,
 //                        userType = "Seller"
 //                    )
-                    ProductEntryScreen(productDao = masterDatabase?.productDao)
+
+//                    ProductEntryScreen(productDao = masterDatabase?.productDao)
+
+                    PurchaseDetailScreen(
+                        sellerId = 3,
+                        purchaseSaleDao = masterDatabase?.purchaseSaleDao,
+                        userDao = masterDatabase?.userDao
+                    )
                 }
                 composable(StartupScreen.Home.route) {
                     HomeScreen(

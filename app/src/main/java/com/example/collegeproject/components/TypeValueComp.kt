@@ -31,9 +31,14 @@ fun TypeValueComp(
     labelText: String,
     onTypeChange: (String) -> Unit,
     onValueChange: (String) -> Unit,
+    typeList: List<String> = UnitType.entries.map { "${it.unit} (${it.acronym})" },
 ) {
     Column {
-        Text(text = labelText, color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.padding(start = 8.dp))
+        Text(
+            text = labelText,
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.padding(start = 8.dp)
+        )
         Row(
             modifier = modifier
                 .fillMaxWidth()
@@ -54,8 +59,7 @@ fun TypeValueComp(
                 ExposedDropdownMenu(
                     expanded = expanded,
                     onDismissRequest = { onDismissRequest() }) {
-                    UnitType.entries
-                        .map { "${it.unit} (${it.acronym})" }
+                    typeList
                         .forEach { unit ->
                             DropdownMenuItem(
                                 text = { Text(text = unit) },

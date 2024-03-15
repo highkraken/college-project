@@ -1,12 +1,16 @@
 package com.example.collegeproject.components
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -22,32 +26,39 @@ fun DropdownFieldComp(
     dropdownList: List<String>,
     readOnly: Boolean
 ) {
-    ExposedDropdownMenuBox(
-        expanded = expanded,
-        onExpandedChange = { onExpandedChange() }
-    ) {
-        TextFieldComp(
-            textInput = selectedOption,
-            labelText = labelText,
-            onValueChange = { onTypeChange(it) },
-            modifier = modifier.menuAnchor(),
-            expanded = expanded,
-            readOnly = readOnly
+    Column {
+        Text(
+            text = labelText,
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.padding(start = 8.dp)
         )
-        DropdownMenu(
-            modifier = Modifier
-                .exposedDropdownSize(true),
-            properties = PopupProperties(focusable = false),
+        ExposedDropdownMenuBox(
             expanded = expanded,
-            onDismissRequest = { onDismissRequest() }) {
-            dropdownList.forEach { item ->
-                DropdownMenuItem(
-                    text = { Text(text = item) },
-                    onClick = {
-                        onTypeChange(item)
-                        onDismissRequest()
-                    }
-                )
+            onExpandedChange = { onExpandedChange() }
+        ) {
+            TextFieldComp(
+                textInput = selectedOption,
+                labelText = "",
+                onValueChange = { onTypeChange(it) },
+                modifier = modifier.menuAnchor(),
+                expanded = expanded,
+                readOnly = readOnly
+            )
+            DropdownMenu(
+                modifier = Modifier
+                    .exposedDropdownSize(true),
+                properties = PopupProperties(focusable = false),
+                expanded = expanded,
+                onDismissRequest = { onDismissRequest() }) {
+                dropdownList.forEach { item ->
+                    DropdownMenuItem(
+                        text = { Text(text = item) },
+                        onClick = {
+                            onTypeChange(item)
+                            onDismissRequest()
+                        }
+                    )
+                }
             }
         }
     }

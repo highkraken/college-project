@@ -41,14 +41,22 @@ class AddPurchaseSaleViewModel(
         private set
 
     fun setSelectedSeller(sellerName: String) {
-        this.sellerName = sellerName
+        uiScope.launch {
+            this@AddPurchaseSaleViewModel.sellerName = sellerName
+            val sellerId = Regex("\\d+").find(sellerName)?.value?.toLong() ?: 3
+            this@AddPurchaseSaleViewModel.sellerId = sellerId
+        }
     }
 
     var productName by mutableStateOf("")
         private set
 
     fun onProductNameChange(productName: String) {
-        this.productName = productName
+        uiScope.launch {
+            this@AddPurchaseSaleViewModel.productName = productName
+            val productId = Regex("\\d+").find(productName)?.value?.toLong() ?: 1
+            this@AddPurchaseSaleViewModel.productId = productId
+        }
     }
 
     fun setSelectedProduct(productName: String) {
@@ -58,9 +66,13 @@ class AddPurchaseSaleViewModel(
         }
     }
 
-    private var sellers = listOf<User>()
+    private val _sellers = MutableLiveData<List<User>>()
+    val sellers: LiveData<List<User>>
+        get() = _sellers
 
-    private var buyers = listOf<User>()
+    private val _buyers = MutableLiveData<List<User>>()
+    val buyers: LiveData<List<User>>
+        get() = _buyers
 
     private val _productsOfSeller = MutableLiveData<Pair<List<String>, List<String>>>()
     val productsOfSeller: LiveData<Pair<List<String>, List<String>>>
@@ -68,6 +80,7 @@ class AddPurchaseSaleViewModel(
 
     init {
         fetchData()
+        Log.d("PRODUCTS", "products -> ${_productsOfSeller.value}")
     }
 
     var unitType by mutableStateOf(UnitType.BAG.toMenuItem())
@@ -89,6 +102,7 @@ class AddPurchaseSaleViewModel(
 
     fun onQuantityChange(quantity: String) {
         this.quantity = quantity
+        totalAmount = calculateTotal().toString()
     }
 
     var price by mutableStateOf("")
@@ -96,6 +110,7 @@ class AddPurchaseSaleViewModel(
 
     fun onPriceChange(price: String) {
         this.price = price
+        totalAmount = calculateTotal().toString()
     }
 
     var priceType by mutableStateOf(PriceType.TWENTY.type)
@@ -113,8 +128,8 @@ class AddPurchaseSaleViewModel(
     fun setSelectedBuyerName(buyerName: String) {
         uiScope.launch {
             this@AddPurchaseSaleViewModel.buyerName = buyerName
-            val buyerId = Regex("\\d+").find(buyerName)?.value?.toLong()
-            this@AddPurchaseSaleViewModel.buyer = getUserById(buyerId!!)
+            val buyerId = Regex("\\d+").find(buyerName)?.value?.toLong() ?: 2
+            this@AddPurchaseSaleViewModel.buyer = getUserById(buyerId)
         }
     }
 
@@ -127,6 +142,8 @@ class AddPurchaseSaleViewModel(
 
     fun onSaveAndNextClick() {
         uiScope.launch {
+            val buyerName = this@AddPurchaseSaleViewModel.buyerName.trim().split(" ").drop(1).joinToString(separator = " ")
+            val sellerName = this@AddPurchaseSaleViewModel.sellerName.trim().split(" ").drop(1).joinToString(separator = " ")
             val purchaseSaleEntry = PurchaseSale(
                 invoiceDate = LocalDate.now(),
                 sellerId = sellerId,
@@ -192,11 +209,11 @@ class AddPurchaseSaleViewModel(
     }
 
     fun getSellers(): List<String> {
-        return sellers.map { "${it.userId}. ${it.ownerName}" }
+        return sellers.value?.map { "${it.userId}. ${it.ownerName}" } ?: listOf()
     }
 
     private fun getBuyers(): List<String> {
-        return buyers.map { "${it.userId}. ${it.ownerName}" }
+        return buyers.value?.map { "${it.userId}. ${it.ownerName}" } ?: listOf()
     }
 
     private fun getProducts() {
@@ -216,14 +233,22 @@ class AddPurchaseSaleViewModel(
 
     private fun fetchData() {
         viewModelScope.launch(Dispatchers.IO) {
-            buyers = userDao.getUsersByType("Buyer").value ?: listOf()
-            Log.d("PRODUCTS", buyers.toString())
-            sellers = userDao.getUsersByType("Seller").value ?: listOf()
-            Log.d("PRODUCTS", sellers.toString())
-
             withContext(Dispatchers.Main) {
+                val allProductsLiveData = productDao.getAllProducts()
+                val productsLiveData = productDao.getProductsOfSeller(sellerId)
+                val allOtherProductsLiveData = productDao.getProductsNotOfSeller(sellerId)
+                val allBuyersLiveData = userDao.getUsersByType("Buyer")
+                val allSellersLiveData = userDao.getUsersByType("Seller")
+                val mediatorLiveData =
+                    MediatorLiveData<Pair<List<Product>?, List<Product>?>>().apply {
+                        addSource(productsLiveData) {
+                            value = it to allOtherProductsLiveData.value
+                        }
+                        addSource(allOtherProductsLiveData) {
+                            value = productsLiveData.value to it
+                        }
+                    }
                 if (sellerId == 0L) {
-                    val allProductsLiveData = productDao.getAllProducts()
                     allProductsLiveData.observeForever { products ->
                         val formattedProducts =
                             products.map { "${it.productId}. ${it.productName}" }
@@ -231,20 +256,6 @@ class AddPurchaseSaleViewModel(
                         _productsOfSeller.postValue(listOf<String>() to formattedProducts)
                     }
                 } else {
-                    val productsLiveData = productDao.getProductsOfSeller(sellerId)
-                    val allOtherProductsLiveData =
-                        productDao.getProductsNotOfSeller(sellerId)
-
-                    val mediatorLiveData =
-                        MediatorLiveData<Pair<List<Product>?, List<Product>?>>().apply {
-                            addSource(productsLiveData) {
-                                value = it to allOtherProductsLiveData.value
-                            }
-                            addSource(allOtherProductsLiveData) {
-                                value = productsLiveData.value to it
-                            }
-                        }
-
                     mediatorLiveData.observeForever { (products, otherProducts) ->
                         val formattedProducts =
                             products?.map { "${it.productId}. ${it.productName}" }
@@ -254,31 +265,14 @@ class AddPurchaseSaleViewModel(
                                 ?: listOf()
                         _productsOfSeller.postValue(formattedProducts to formattedOtherProducts)
                     }
-//                    mediatorLiveData.addSource(productsLiveData) { products ->
-//                        val formattedProducts =
-//                            products.map { "${it.productId}. ${it.productName}" }
-//                        val formattedOtherProducts =
-//                            allOtherProductsLiveData.value?.map { "${it.productId}. ${it.productName}" }
-//                                ?: listOf()
-//                        mediatorLiveData.postValue(formattedProducts to formattedOtherProducts)
-//                    }
-//                    mediatorLiveData.addSource(allOtherProductsLiveData) { otherProducts ->
-//                        val formattedOtherProducts =
-//                            otherProducts.map { "${it.productId}. ${it.productName}" }
-//                        val formattedProducts =
-//                            productsLiveData.value?.map { "${it.productId}. ${it.productName}" }
-//                                ?: listOf()
-//                        mediatorLiveData.postValue(formattedProducts to formattedOtherProducts)
-//                    }
+                }
+                allBuyersLiveData.observeForever { buyers ->
+                    _buyers.postValue(buyers)
+                }
+                allSellersLiveData.observeForever { sellers ->
+                    _sellers.postValue(sellers)
                 }
             }
-
-//            val products =
-//                productDao.getProductsOfSeller(sellerId)
-//            val allOtherProducts =
-//                productDao.getProductsNotOfSeller(sellerId).value?.map { "${it.productId}. ${it.productName}" } ?: productDao.getAllProducts().value?.map { "${it.productId}. ${it.productName}" } ?: listOf()
-//            _productsOfSeller.postValue(products to allOtherProducts)
-//            Log.d("PRODUCTS", _productsOfSeller.value.toString())
 
             if (sellerId != 0L) {
                 val seller = getUserById(sellerId)
