@@ -8,8 +8,10 @@ import androidx.compose.material.icons.automirrored.filled.Assignment
 import androidx.compose.material.icons.automirrored.filled.Login
 import androidx.compose.material.icons.automirrored.outlined.Assignment
 import androidx.compose.material.icons.automirrored.outlined.Login
+import androidx.compose.material.icons.filled.AddBox
 import androidx.compose.material.icons.filled.Assignment
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.outlined.AddBox
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -40,29 +42,35 @@ fun AdminScreen(
 ) {
     val screens = listOf(
         AdminBottomBarItem(
-            label = "Data Input",
+            label = "Product",
+            selectedIcon = Icons.Filled.AddBox,
+            unselectedIcon = Icons.Outlined.AddBox,
+            route = "add_product"
+        ),
+        AdminBottomBarItem(
+            label = "Input",
             selectedIcon = Icons.AutoMirrored.Filled.Assignment,
             unselectedIcon = Icons.AutoMirrored.Outlined.Assignment,
             route = StartupScreen.SignUp.route
         ),
         AdminBottomBarItem(
-            label = "Seller Invoice",
+            label = "Seller",
             selectedIcon = Icons.AutoMirrored.Filled.Login,
             unselectedIcon = Icons.AutoMirrored.Outlined.Login,
             route = StartupScreen.Login.route
         ),
         AdminBottomBarItem(
-            label = "Home",
+            label = "Buyer",
+            selectedIcon = Icons.AutoMirrored.Filled.Assignment,
+            unselectedIcon = Icons.AutoMirrored.Outlined.Assignment,
+            route = StartupScreen.Admin.route
+        ),
+        AdminBottomBarItem(
+            label = "Logout",
             selectedIcon = Icons.Filled.Home,
             unselectedIcon = Icons.Outlined.Home,
             route = StartupScreen.Home.route
         ),
-        AdminBottomBarItem(
-            label = "Buyer Invoice",
-            selectedIcon = Icons.AutoMirrored.Filled.Assignment,
-            unselectedIcon = Icons.AutoMirrored.Outlined.Assignment,
-            route = StartupScreen.Admin.route
-        )
     )
     val navController = rememberNavController()
     Scaffold(
@@ -98,6 +106,11 @@ fun AdminScreen(
                         sellerId = 3,
                         purchaseSaleDao = masterDatabase?.purchaseSaleDao,
                         userDao = masterDatabase?.userDao
+                    )
+                }
+                composable("add_product") {
+                    ProductEntryScreen(
+                        productDao = masterDatabase?.productDao
                     )
                 }
                 composable(StartupScreen.Home.route) {
