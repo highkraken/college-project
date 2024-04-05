@@ -32,6 +32,7 @@ class AddPurchaseSaleViewModel(
     private val productDao: ProductDao,
     private var sellerId: Long,
     private var productId: Long,
+    private val purchaseSaleId: Long
 ) : ViewModel() {
     private val viewModelJob = Job()
 
@@ -144,8 +145,8 @@ class AddPurchaseSaleViewModel(
         uiScope.launch {
             val buyerName = this@AddPurchaseSaleViewModel.buyerName.trim().split(" ").drop(1).joinToString(separator = " ")
             val sellerName = this@AddPurchaseSaleViewModel.sellerName.trim().split(" ").drop(1).joinToString(separator = " ")
-            val purchaseSaleEntry = PurchaseSale(
-                invoiceDate = LocalDate.now(),
+            var purchaseSaleEntry = PurchaseSale(
+                invoiceDate = LocalDate.parse("2024-03-04"),
                 sellerId = sellerId,
                 sellerName = sellerName,
                 buyerId = buyer!!.userId,
@@ -157,6 +158,8 @@ class AddPurchaseSaleViewModel(
                 productQuantity = quantity.toFloatOrNull() ?: 0f,
                 productTotal = calculateTotal()
             )
+            if (purchaseSaleId != 0L)
+                purchaseSaleEntry = purchaseSaleEntry.copy(invoiceId = purchaseSaleId)
             addEntryToDatabase(purchaseSaleEntry)
             resetAllFields()
         }
@@ -274,6 +277,24 @@ class AddPurchaseSaleViewModel(
                 }
             }
 
+            if (purchaseSaleId != 0L) {
+                withContext(Dispatchers.IO) {
+                    val entry = purchaseSaleDao.getEntryById(purchaseSaleId, LocalDate.parse("2024-03-04"))
+
+//                    sellerName = entry.sellerName
+//                    productName = entry.product.productName
+                    sellerId = entry.sellerId
+                    productId = entry.product.productId
+                    unit = entry.productUnit.toString()
+                    quantity = entry.productQuantity.toString()
+                    price = entry.productPrice.toString()
+                    priceType = entry.priceType.toMenuItem()
+                    buyer = getUserById(entry.buyerId)
+                    buyerName = entry.buyerName
+                    totalAmount = entry.productTotal.toString()
+                }
+            }
+
             if (sellerId != 0L) {
                 val seller = getUserById(sellerId)
                 sellerName = "${seller.userId}. ${seller.ownerName}"
@@ -348,6 +369,7 @@ class AddPurchaseSaleViewModelFactory(
     private val productDao: ProductDao,
     private val sellerId: Long = 0,
     private val productId: Long = 0,
+    private val purchaseSaleId: Long = 0
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(AddPurchaseSaleViewModel::class.java)) {
@@ -356,7 +378,8 @@ class AddPurchaseSaleViewModelFactory(
                 userDao,
                 productDao,
                 sellerId,
-                productId
+                productId,
+                purchaseSaleId
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

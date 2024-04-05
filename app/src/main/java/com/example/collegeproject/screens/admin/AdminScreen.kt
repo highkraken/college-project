@@ -18,10 +18,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.example.collegeproject.components.AdminBottomBar
 import com.example.collegeproject.database.MasterDatabase
 import com.example.collegeproject.database.UserDao
+import com.example.collegeproject.navigation.AdminDataInputNavGraph
 import com.example.collegeproject.screens.HomeScreen
 import com.example.collegeproject.screens.admin.datainput.DataInputScreen
 import com.example.collegeproject.screens.admin.datainput.product.ProductEntryScreen
@@ -29,6 +31,7 @@ import com.example.collegeproject.screens.admin.datainput.purchase.PurchaseDetai
 import com.example.collegeproject.screens.admin.datainput.purchasesale.AddPurchaseSaleScreen
 import com.example.collegeproject.screens.admin.datainput.sale.SaleDetailScreen
 import com.example.collegeproject.utils.AdminBottomBarItem
+import com.example.collegeproject.utils.AdminNavigation
 import com.example.collegeproject.utils.StartupScreen
 import com.example.collegeproject.utils.UserPreferencesRepository
 
@@ -48,10 +51,10 @@ fun AdminScreen(
             route = "add_product"
         ),
         AdminBottomBarItem(
-            label = "Input",
-            selectedIcon = Icons.AutoMirrored.Filled.Assignment,
-            unselectedIcon = Icons.AutoMirrored.Outlined.Assignment,
-            route = StartupScreen.SignUp.route
+            label = "Home",
+            selectedIcon = Icons.Filled.Home,
+            unselectedIcon = Icons.Outlined.Home,
+            route = AdminNavigation.DataInput.route
         ),
         AdminBottomBarItem(
             label = "Seller",
@@ -83,12 +86,21 @@ fun AdminScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            NavHost(navController = navController, startDestination = StartupScreen.SignUp.route) {
+            NavHost(navController = navController, startDestination = AdminNavigation.DataInput.route) {
                 composable(StartupScreen.Admin.route) {
                     SaleDetailScreen(
                         buyerId = 8,
                         purchaseSaleDao = masterDatabase?.purchaseSaleDao,
                         userDao = masterDatabase?.userDao
+                    )
+                }
+
+                composable(AdminNavigation.DataInput.route) {
+                    AdminDataInputNavGraph(
+                        navController = rememberNavController(),
+                        productDao = masterDatabase!!.productDao,
+                        purchaseSaleDao = masterDatabase.purchaseSaleDao,
+                        userDao = masterDatabase.userDao
                     )
                 }
 

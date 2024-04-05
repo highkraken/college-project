@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.Card
@@ -22,12 +23,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import com.example.collegeproject.utils.AdminNavigation
 
 @Composable
-fun DataInputScreen() {
+fun DataInputScreen(
+    navController: NavHostController? = null
+) {
     val dataInputItems = listOf("Product", "Purchase-Sale", "Purchase", "Sale", "Credit")
+    val dataInputRoutes = listOf(AdminNavigation.Product.route, AdminNavigation.PurchaseSale.route, AdminNavigation.Purchase.route, AdminNavigation.Sale.route, AdminNavigation.Credit.route)
     LazyVerticalGrid(columns = GridCells.Fixed(2), modifier = Modifier.fillMaxSize()) {
-        items(dataInputItems) { item ->
+        itemsIndexed(dataInputItems) { index, item ->
             Card(
                 modifier = Modifier
                     .fillMaxWidth(0.5f)
@@ -36,7 +42,7 @@ fun DataInputScreen() {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .clickable {  }
+                        .clickable { navController?.navigate(dataInputRoutes[index]) }
                         .padding(16.dp),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally

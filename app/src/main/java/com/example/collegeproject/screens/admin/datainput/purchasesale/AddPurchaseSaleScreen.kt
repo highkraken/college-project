@@ -38,6 +38,7 @@ fun AddPurchaseSaleScreen(
     productDao: ProductDao? = null,
     sellerId: Long = 0L,
     productId: Long = 0L,
+    purchaseSaleId: Long = 0L
 ) {
     val context = LocalContext.current
     val viewLifecycleOwner = LocalLifecycleOwner.current
@@ -51,7 +52,8 @@ fun AddPurchaseSaleScreen(
             userDao!!,
             productDao!!,
             sellerId,
-            productId
+            productId,
+            purchaseSaleId
         )
     )
     var sellerProducts: List<String> = listOf()
