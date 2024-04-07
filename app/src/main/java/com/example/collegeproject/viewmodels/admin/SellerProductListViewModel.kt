@@ -32,7 +32,7 @@ class SellerProductListViewModel(
     private fun fetchData() {
         viewModelScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.Main) {
-                val listLiveData = purchaseSaleDao.getSellerProductList(date = LocalDate.parse("2024-03-04"))
+                val listLiveData = purchaseSaleDao.getSellerProductList()
 
                 listLiveData.observeForever { list ->
                     _sellerProductList.postValue(list)

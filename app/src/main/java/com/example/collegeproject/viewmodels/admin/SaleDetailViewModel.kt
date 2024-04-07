@@ -28,7 +28,7 @@ class SaleDetailViewModel(
     var buyerName: String = ""
         private set
 
-    var date: LocalDate = LocalDate.parse("2024-03-04")
+    var date: LocalDate = LocalDate.now()
         private set
 
     var labour = 0f

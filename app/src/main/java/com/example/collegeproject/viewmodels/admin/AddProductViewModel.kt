@@ -17,10 +17,37 @@ import kotlinx.coroutines.withContext
 
 class AddProductViewModel(
     private val productDao: ProductDao,
+    private val productId: Long
 ) : ViewModel() {
     private val viewModelJob = Job()
 
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+    init {
+        var product: Product? = null
+        if (productId != 0L) {
+            CoroutineScope(Dispatchers.IO).launch {
+                product = productDao.getProductById(productId)
+                withContext(Dispatchers.Main) {
+                    if (product != null) {
+                        productName = product!!.productName
+                        sWageType = product!!.saleWageType.toMenuItem()
+                        sWage = product!!.saleWage.toString()
+                        sExtExpType = product!!.saleExtraExpenseType.toMenuItem()
+                        sExtExp = product!!.saleExtraExpense.toString()
+                        pWageType = product!!.purchaseWageType.toMenuItem()
+                        pWage = product!!.purchaseWage.toString()
+                        pCommissionType = product!!.purchaseCommissionType.toMenuItem()
+                        pCommission = product!!.purchaseCommission.toString()
+                        importFareType = product!!.purchaseImportFareType.toMenuItem()
+                        importFare = product!!.purchaseImportFare.toString()
+                        pExtExpType = product!!.purchaseExtraExpenseType.toMenuItem()
+                        pExtExp = product!!.purchaseExtraExpense.toString()
+                    }
+                }
+            }
+        }
+    }
 
     var productName by mutableStateOf("")
         private set
@@ -181,7 +208,7 @@ class AddProductViewModel(
 
     fun onAddProductClick() {
         uiScope.launch {
-            val product = Product(
+            var product = Product(
                 productName = productName,
                 saleWage = sWage.toFloatOrNull() ?: 0f,
                 saleWageType = sWageType.toUnitType(),
@@ -196,6 +223,7 @@ class AddProductViewModel(
                 purchaseExtraExpense = pExtExp.toFloatOrNull() ?: 0f,
                 purchaseExtraExpenseType = pExtExpType.toUnitType()
             )
+            if (productId != 0L) product = product.copy(productId = productId)
             addProductToDatabase(product)
         }
     }
@@ -210,10 +238,11 @@ class AddProductViewModel(
 @Suppress("UNCHECKED_CAST")
 class AddProductViewModelFactory(
     private val dataSource: ProductDao,
+    private val productId: Long
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(AddProductViewModel::class.java)) {
-            return AddProductViewModel(dataSource) as T
+            return AddProductViewModel(dataSource, productId) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

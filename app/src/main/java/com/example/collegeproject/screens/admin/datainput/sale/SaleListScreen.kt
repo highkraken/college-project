@@ -1,4 +1,4 @@
-package com.example.collegeproject.screens.admin.datainput.purchase
+package com.example.collegeproject.screens.admin.datainput.sale
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,23 +22,23 @@ import androidx.navigation.NavHostController
 import com.example.collegeproject.database.PurchaseSale
 import com.example.collegeproject.database.PurchaseSaleDao
 import com.example.collegeproject.utils.AdminNavigation
-import com.example.collegeproject.viewmodels.admin.PurchaseListViewModel
-import com.example.collegeproject.viewmodels.admin.PurchaseListViewModelFactory
+import com.example.collegeproject.viewmodels.admin.SaleListViewModel
+import com.example.collegeproject.viewmodels.admin.SaleListViewModelFactory
 
 @Composable
-fun PurchaseListScreen(
+fun SaleListScreen(
     modifier: Modifier = Modifier,
     purchaseSaleDao: PurchaseSaleDao,
     navController: NavHostController
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
-    val purchaseListViewModel: PurchaseListViewModel = viewModel(factory = PurchaseListViewModelFactory(purchaseSaleDao))
+    val saleListViewModel: SaleListViewModel = viewModel(factory = SaleListViewModelFactory(purchaseSaleDao))
 
-    var purchaseList = listOf<PurchaseSale>()
+    var saleList = listOf<PurchaseSale>()
 
-    purchaseListViewModel.purchaseList.observe(lifecycleOwner) { list ->
+    saleListViewModel.saleList.observe(lifecycleOwner) { list ->
         if (list != null) {
-            purchaseList = list
+            saleList = list
         }
     }
 
@@ -46,20 +46,20 @@ fun PurchaseListScreen(
         modifier = modifier
             .fillMaxSize()
     ) {
-        items(purchaseList) { item ->
+        items(saleList) { item ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
                         navController.navigate(
-                            AdminNavigation.Purchase.PurchaseDetail.route
-                                .replace("{sellerId}", item.sellerId.toString())
+                            AdminNavigation.Sale.SaleDetail.route
+                                .replace("{buyerId}", item.buyerId.toString())
                         )
                     }
                     .padding(24.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = "${item.sellerId}. ${item.sellerName}")
+                Text(text = "${item.buyerId}. ${item.buyerName}")
                 Icon(
                     imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos,
                     contentDescription = ""

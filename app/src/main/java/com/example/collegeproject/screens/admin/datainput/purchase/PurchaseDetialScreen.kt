@@ -45,8 +45,8 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun PurchaseDetailScreen(
     modifier: Modifier = Modifier,
-    purchaseSaleDao: PurchaseSaleDao? = null,
-    userDao: UserDao? = null,
+    purchaseSaleDao: PurchaseSaleDao,
+    userDao: UserDao,
     sellerId: Long,
 ) {
     val purchaseDetailViewModel: PurchaseDetailViewModel =

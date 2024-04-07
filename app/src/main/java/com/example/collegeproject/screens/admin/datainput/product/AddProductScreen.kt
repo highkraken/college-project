@@ -31,8 +31,9 @@ import com.example.collegeproject.viewmodels.admin.AddProductViewModel
 import com.example.collegeproject.viewmodels.admin.AddProductViewModelFactory
 
 @Composable
-fun ProductEntryScreen(
+fun AddProductScreen(
     modifier: Modifier = Modifier,
+    productId: Long,
     productDao: ProductDao?,
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -42,7 +43,7 @@ fun ProductEntryScreen(
         MutableInteractionSource()
     }
     val addProductViewModel: AddProductViewModel =
-        viewModel(factory = AddProductViewModelFactory(productDao!!))
+        viewModel(factory = AddProductViewModelFactory(productDao!!, productId))
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -138,7 +139,7 @@ fun ProductEntryScreen(
             addProductViewModel.onAddProductClick()
             Toast.makeText(context, "Product added successfully!", Toast.LENGTH_SHORT).show()
         }) {
-            Text(text = "Add Product")
+            Text(text = if (productId == 0L) "Add Product" else "Update Product")
         }
     }
 }
@@ -146,5 +147,5 @@ fun ProductEntryScreen(
 @Preview
 @Composable
 fun ProductEntryPreview() {
-    ProductEntryScreen(productDao = null)
+    AddProductScreen(productDao = null, productId = 0L)
 }

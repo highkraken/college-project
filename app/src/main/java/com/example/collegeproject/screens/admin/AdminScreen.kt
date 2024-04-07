@@ -9,7 +9,6 @@ import androidx.compose.material.icons.automirrored.filled.Login
 import androidx.compose.material.icons.automirrored.outlined.Assignment
 import androidx.compose.material.icons.automirrored.outlined.Login
 import androidx.compose.material.icons.filled.AddBox
-import androidx.compose.material.icons.filled.Assignment
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.AddBox
 import androidx.compose.material.icons.outlined.Home
@@ -18,15 +17,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.example.collegeproject.components.AdminBottomBar
 import com.example.collegeproject.database.MasterDatabase
 import com.example.collegeproject.database.UserDao
 import com.example.collegeproject.navigation.AdminDataInputNavGraph
 import com.example.collegeproject.screens.HomeScreen
-import com.example.collegeproject.screens.admin.datainput.DataInputScreen
-import com.example.collegeproject.screens.admin.datainput.product.ProductEntryScreen
+import com.example.collegeproject.screens.admin.datainput.product.AddProductScreen
 import com.example.collegeproject.screens.admin.datainput.purchase.PurchaseDetailScreen
 import com.example.collegeproject.screens.admin.datainput.purchasesale.AddPurchaseSaleScreen
 import com.example.collegeproject.screens.admin.datainput.sale.SaleDetailScreen
@@ -90,8 +87,8 @@ fun AdminScreen(
                 composable(StartupScreen.Admin.route) {
                     SaleDetailScreen(
                         buyerId = 8,
-                        purchaseSaleDao = masterDatabase?.purchaseSaleDao,
-                        userDao = masterDatabase?.userDao
+                        purchaseSaleDao = masterDatabase?.purchaseSaleDao!!,
+                        userDao = masterDatabase.userDao
                     )
                 }
 
@@ -116,13 +113,14 @@ fun AdminScreen(
 
                     PurchaseDetailScreen(
                         sellerId = 3,
-                        purchaseSaleDao = masterDatabase?.purchaseSaleDao,
-                        userDao = masterDatabase?.userDao
+                        purchaseSaleDao = masterDatabase?.purchaseSaleDao!!,
+                        userDao = masterDatabase.userDao
                     )
                 }
                 composable("add_product") {
-                    ProductEntryScreen(
-                        productDao = masterDatabase?.productDao
+                    AddProductScreen(
+                        productDao = masterDatabase?.productDao,
+                        productId = 0
                     )
                 }
                 composable(StartupScreen.Home.route) {

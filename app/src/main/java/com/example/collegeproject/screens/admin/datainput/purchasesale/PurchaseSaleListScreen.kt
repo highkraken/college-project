@@ -9,7 +9,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.Divider
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -37,7 +42,7 @@ fun PurchaseSaleListScreen(
     productId: Long
 ) {
     val purchaseSaleListViewModel: PurchaseSaleListViewModel = viewModel(factory = PurchaseSaleListViewModelFactory(
-        purchaseSaleDao, sellerId, productId, LocalDate.parse("2024-03-04")
+        purchaseSaleDao, sellerId, productId, LocalDate.now()
     ))
 
     val viewLifecycleOwner = LocalLifecycleOwner.current

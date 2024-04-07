@@ -13,23 +13,23 @@ sealed class AdminNavigation(val route: String) {
     data object Product : AdminNavigation("product") {
         data object AddProduct : AdminNavigation("add_product")
         data object ProductList : AdminNavigation("product_list")
-        data object ProductDetail : AdminNavigation("product_detail")
+        data object ProductDetail : AdminNavigation("product_detail?productId={productId}")
     }
     data object PurchaseSale : AdminNavigation("purchase_sale") {
         data object AddPurchaseSale : AdminNavigation("add_purchase_sale")
         data object SellerProductList : AdminNavigation("seller_product_list")
         data object PurchaseSaleList : AdminNavigation("purchase_sale_list/{productId}/{sellerId}")
-        data object PurchaseSaleDetail : AdminNavigation("purchase_sale_detail/{purchaseSaleId}")
+        data object PurchaseSaleDetail : AdminNavigation("purchase_sale_detail?purchaseSaleId={purchaseSaleId}")
     }
     data object Purchase : AdminNavigation("purchase") {
         data object AddPurchase : AdminNavigation("add_purchase")
         data object PurchaseList : AdminNavigation("purchase_list")
-        data object PurchaseDetail : AdminNavigation("purchase_detail")
+        data object PurchaseDetail : AdminNavigation("purchase_detail/{sellerId}")
     }
     data object Sale : AdminNavigation("sale") {
         data object AddSale : AdminNavigation("add_sale")
         data object SaleList : AdminNavigation("sale_list")
-        data object SaleDetail : AdminNavigation("sale_detail")
+        data object SaleDetail : AdminNavigation("sale_detail/{buyerId}")
     }
     data object Credit : AdminNavigation("credit") {
         data object AddCredit : AdminNavigation("add_credit")

@@ -146,7 +146,7 @@ class AddPurchaseSaleViewModel(
             val buyerName = this@AddPurchaseSaleViewModel.buyerName.trim().split(" ").drop(1).joinToString(separator = " ")
             val sellerName = this@AddPurchaseSaleViewModel.sellerName.trim().split(" ").drop(1).joinToString(separator = " ")
             var purchaseSaleEntry = PurchaseSale(
-                invoiceDate = LocalDate.parse("2024-03-04"),
+                invoiceDate = LocalDate.now(),
                 sellerId = sellerId,
                 sellerName = sellerName,
                 buyerId = buyer!!.userId,
@@ -279,7 +279,7 @@ class AddPurchaseSaleViewModel(
 
             if (purchaseSaleId != 0L) {
                 withContext(Dispatchers.IO) {
-                    val entry = purchaseSaleDao.getEntryById(purchaseSaleId, LocalDate.parse("2024-03-04"))
+                    val entry = purchaseSaleDao.getEntryById(purchaseSaleId, LocalDate.now())
 
 //                    sellerName = entry.sellerName
 //                    productName = entry.product.productName

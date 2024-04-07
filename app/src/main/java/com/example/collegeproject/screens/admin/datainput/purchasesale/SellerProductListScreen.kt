@@ -9,7 +9,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.Divider
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -44,30 +49,50 @@ fun SellerProductListScreen(
         }
     }
 
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-    ) {
-        items(sellerProductList) { sellerProductName ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-                    .clickable {
-                        navController
-                            .navigate(
-                                AdminNavigation.PurchaseSale.PurchaseSaleList.route
-                                    .replace(oldValue = "{productId}", newValue = sellerProductName.productId.toString())
-                                    .replace(oldValue = "{sellerId}", newValue = sellerProductName.sellerId.toString())
-                            )
-                    },
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                NormalTextComp(text = sellerProductName.sellerName, modifier = Modifier.weight(1f))
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = sellerProductName.productName, modifier = Modifier.weight(1f))
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+                navController.navigate(AdminNavigation.PurchaseSale.PurchaseSaleDetail.route)
+            }) {
+                Icon(imageVector = Icons.Rounded.Add, contentDescription = "Add entry")
             }
-            Divider()
+        }
+    ) { paddingValues ->
+        LazyColumn(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            items(sellerProductList) { sellerProductName ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .clickable {
+                            navController
+                                .navigate(
+                                    AdminNavigation.PurchaseSale.PurchaseSaleList.route
+                                        .replace(
+                                            oldValue = "{productId}",
+                                            newValue = sellerProductName.productId.toString()
+                                        )
+                                        .replace(
+                                            oldValue = "{sellerId}",
+                                            newValue = sellerProductName.sellerId.toString()
+                                        )
+                                )
+                        },
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    NormalTextComp(
+                        text = sellerProductName.sellerName,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = sellerProductName.productName, modifier = Modifier.weight(1f))
+                }
+                Divider()
+            }
         }
     }
 }

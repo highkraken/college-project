@@ -56,4 +56,10 @@ interface PurchaseSaleDao {
 
     @Query("SELECT * FROM purchase_sale_invoice WHERE seller_id = :sellerId AND product_id = :productId AND invoice_date = :date")
     fun getPurchaseSaleList(sellerId: Long, productId: Long, date: LocalDate = LocalDate.now()): LiveData<List<PurchaseSale>>
+
+    @Query("SELECT * FROM purchase_sale_invoice WHERE invoice_date = :date GROUP BY seller_id ORDER BY seller_id")
+    fun getPurchaseList(date: LocalDate = LocalDate.now()): LiveData<List<PurchaseSale>>
+
+    @Query("SELECT * FROM purchase_sale_invoice WHERE invoice_date = :date GROUP BY buyer_id ORDER BY buyer_id")
+    fun getSaleList(date: LocalDate = LocalDate.now()): LiveData<List<PurchaseSale>>
 }
