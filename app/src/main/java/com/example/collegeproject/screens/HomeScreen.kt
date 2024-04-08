@@ -35,7 +35,7 @@ fun HomeScreen(
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModelFactory(userDao!!, userPreferencesRepository!!))
-    val getType = if (userType == "Sellers") "Buyer" else "Seller"
+    val getType = if (userType == "Sellers") "Seller" else "Buyer"
     Scaffold(
         topBar = { TopAppBarComp(title = "Home") },
         ) { padding ->

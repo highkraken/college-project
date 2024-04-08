@@ -11,7 +11,6 @@ sealed class StartupScreen(val route: String) {
 sealed class AdminNavigation(val route: String) {
     data object DataInput : AdminNavigation("data_input")
     data object Product : AdminNavigation("product") {
-        data object AddProduct : AdminNavigation("add_product")
         data object ProductList : AdminNavigation("product_list")
         data object ProductDetail : AdminNavigation("product_detail?productId={productId}")
     }
@@ -35,5 +34,14 @@ sealed class AdminNavigation(val route: String) {
         data object AddCredit : AdminNavigation("add_credit")
         data object CreditList : AdminNavigation("credit_list")
         data object CreditDetail : AdminNavigation("credit_detail")
+    }
+    data object UserList : AdminNavigation("user_list")
+}
+
+sealed class UserNavigation(val route: String) {
+    data object UserList : UserNavigation("user_list/{userType}")
+    data object Invoice : UserNavigation("invoice") {
+        data object InvoiceList : UserNavigation("invoice_list/{userType}")
+        data object InvoiceDetail : UserNavigation("invoice_detail/{date}")
     }
 }

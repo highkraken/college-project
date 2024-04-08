@@ -12,6 +12,8 @@ import androidx.compose.material.icons.filled.AddBox
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.AddBox
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Person2
+import androidx.compose.material.icons.rounded.Person2
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,6 +25,7 @@ import com.example.collegeproject.database.MasterDatabase
 import com.example.collegeproject.database.UserDao
 import com.example.collegeproject.navigation.AdminDataInputNavGraph
 import com.example.collegeproject.screens.HomeScreen
+import com.example.collegeproject.screens.UserListScreen
 import com.example.collegeproject.screens.admin.datainput.product.AddProductScreen
 import com.example.collegeproject.screens.admin.datainput.purchase.PurchaseDetailScreen
 import com.example.collegeproject.screens.admin.datainput.purchasesale.AddPurchaseSaleScreen
@@ -54,10 +57,10 @@ fun AdminScreen(
             route = AdminNavigation.DataInput.route
         ),
         AdminBottomBarItem(
-            label = "Seller",
-            selectedIcon = Icons.AutoMirrored.Filled.Login,
-            unselectedIcon = Icons.AutoMirrored.Outlined.Login,
-            route = StartupScreen.Login.route
+            label = "All Users",
+            selectedIcon = Icons.Rounded.Person2,
+            unselectedIcon = Icons.Outlined.Person2,
+            route = AdminNavigation.UserList.route
         ),
         AdminBottomBarItem(
             label = "Buyer",
@@ -100,27 +103,17 @@ fun AdminScreen(
                         userDao = masterDatabase.userDao
                     )
                 }
-
-                composable(StartupScreen.Login.route) {
-//                    HomeScreen(
-//                        navController = navController,
-//                        userDao = userDao,
-//                        userPreferencesRepository = userPreferencesRepository,
-//                        userType = "Seller"
-//                    )
-
-//                    ProductEntryScreen(productDao = masterDatabase?.productDao)
-
-                    PurchaseDetailScreen(
-                        sellerId = 3,
-                        purchaseSaleDao = masterDatabase?.purchaseSaleDao!!,
-                        userDao = masterDatabase.userDao
+                composable(AdminNavigation.UserList.route) {
+                    AllUserScreen(
+                        userDao = masterDatabase?.userDao!!,
+                        purchaseSaleDao = masterDatabase.purchaseSaleDao
                     )
                 }
                 composable("add_product") {
-                    AddProductScreen(
-                        productDao = masterDatabase?.productDao,
-                        productId = 0
+                    UserListScreen(
+                        userDao = masterDatabase?.userDao!!,
+                        purchaseSaleDao = masterDatabase.purchaseSaleDao,
+                        userType = "Buyer"
                     )
                 }
                 composable(StartupScreen.Home.route) {
@@ -137,13 +130,14 @@ fun AdminScreen(
 //                    )
                 }
                 composable(StartupScreen.SignUp.route) {
-                    AddPurchaseSaleScreen(
-                        purchaseSaleDao = masterDatabase?.purchaseSaleDao,
-                        userDao = masterDatabase?.userDao,
-                        productDao = masterDatabase?.productDao,
-                        sellerId = 3,
-                        productId = 0
-                    )
+//                    AddPurchaseSaleScreen(
+//                        purchaseSaleDao = masterDatabase?.purchaseSaleDao,
+//                        userDao = masterDatabase?.userDao,
+//                        productDao = masterDatabase?.productDao,
+//                        sellerId = 3,
+//                        productId = 0
+//                    )
+
                 }
             }
         }
