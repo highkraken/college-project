@@ -1,7 +1,9 @@
 package com.example.collegeproject
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,6 +33,37 @@ class MainActivity : ComponentActivity() {
                     val masterDatabase = MasterDatabase.getInstance(applicationContext)
                     val userPreferencesRepository = UserPreferencesRepository(dataStore)
                     BillOrganizerApp(masterDatabase.userDao, userPreferencesRepository)
+                }
+            }
+        }
+    }
+    @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        // on below line we are checking if the
+        // request code is equal to permission code.
+        if (requestCode == 101) {
+
+            // on below line we are checking if result size is > 0
+            if (grantResults.isNotEmpty()) {
+
+                // on below line we are checking if both the permissions are granted.
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+
+                    // if permissions are granted we are displaying a toast message.
+                    Toast.makeText(this, "Permission Granted..", Toast.LENGTH_SHORT).show()
+
+                } else {
+
+                    // if permissions are not granted we are
+                    // displaying a toast message as permission denied.
+                    Toast.makeText(this, "Permission Denied..", Toast.LENGTH_SHORT).show()
+                    finish()
                 }
             }
         }

@@ -14,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.collegeproject.R
 import com.example.collegeproject.components.HomeTileComp
 import com.example.collegeproject.components.TopAppBarComp
@@ -27,7 +28,7 @@ import com.example.collegeproject.viewmodels.HomeViewModelFactory
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    navController: NavController?,
+    navController: NavHostController?,
     userDao: UserDao?,
     userPreferencesRepository: UserPreferencesRepository?,
     userType: String,
@@ -57,7 +58,7 @@ fun HomeScreen(
                 title = "Logout",
                 leadingIcon = painterResource(id = R.drawable.icon_logout),
                 onClick = {
-                    navController?.navigateWithPop(StartupScreen.Login.route, StartupScreen.Home.route)
+//                    navController?.navigateWithPop(StartupScreen.Login.route, StartupScreen.Home.route)
                     homeViewModel.clearUserPreferences()
                 }
             )

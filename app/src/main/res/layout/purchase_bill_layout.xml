@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:background="@drawable/orange_round_border">
+
+        <TextView
+            android:id="@+id/company_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Radheshyam Vegetables &amp; Co."
+            android:textColor="@color/green"
+            android:textSize="70px"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/slogan_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:background="@color/orange"
+            android:fontFamily="sans-serif-condensed"
+            android:paddingHorizontal="10dp"
+            android:text="Wholesale vegetable and commission agent"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="30px"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/company_tv" />
+
+        <TextView
+            android:id="@+id/address_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:text="188, Main Bazaar, Opp. Narain Chappal House, Kubernagar"
+            android:textColor="@color/green"
+            android:textSize="30px"
+            android:textStyle="bold|italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/slogan_tv" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/orange"
+            app:layout_constraintTop_toBottomOf="@id/address_tv" />
+
+        <TextView
+            android:id="@+id/sname_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Name:"
+            android:textColor="@color/green"
+            android:textSize="38px"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view" />
+
+        <TextView
+            android:id="@+id/name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:fontFamily="sans-serif-condensed"
+            android:textAllCaps="true"
+            android:textSize="45px"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/sname_tv"
+            app:layout_constraintStart_toEndOf="@+id/sname_tv"
+            app:layout_constraintTop_toTopOf="@+id/sname_tv"
+            tools:text="Bharti Rekha" />
+
+        <TextView
+            android:id="@+id/sdate_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Date:"
+            android:textColor="@color/green"
+            android:textSize="38px"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/date_tv"
+            app:layout_constraintEnd_toStartOf="@+id/date_tv"
+            app:layout_constraintTop_toTopOf="@+id/date_tv" />
+
+        <TextView
+            android:id="@+id/date_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="sans-serif-condensed"
+            android:textAllCaps="true"
+            android:textSize="45px"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/name_tv"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="2024-03-04" />
+
+        <LinearLayout
+            android:id="@+id/type_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/orange"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/name_tv">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingVertical="2dp"
+                android:text="Unit"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="35px"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/white" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3.26"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingVertical="2dp"
+                android:text="Product"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="35px"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/white" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingVertical="2dp"
+                android:text="Qty."
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="35px"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/white" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingVertical="2dp"
+                android:text="Rate"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="35px"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/white" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingVertical="2dp"
+                android:text="Total"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="35px"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/items_ll"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="2dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/right_side_ll"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/type_ll">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8" />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/orange" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3.26" />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/orange" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/orange" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/orange" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2" />
+
+        </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/items_rv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="2dp"
+            app:layout_constraintBottom_toBottomOf="@+id/items_ll"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/type_ll"
+            tools:listitem="@layout/invoice_item_rv" />
+
+        <LinearLayout
+            android:id="@+id/left_side_ll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/right_side_ll"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/orange"
+                app:layout_constraintBottom_toTopOf="@id/all_exp_ll" />
+
+            <LinearLayout
+                android:id="@+id/all_exp_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-condensed"
+                    android:gravity="center"
+                    android:text="Commission:"
+                    android:textAlignment="center"
+                    android:textColor="@color/green"
+                    android:textSize="38px"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/commission_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-black"
+                    android:textAlignment="textEnd"
+                    android:paddingEnd="2dp"
+                    android:textSize="45px"
+                    android:textStyle="bold"
+                    tools:text="1900.00" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view3"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/orange"
+                app:layout_constraintBottom_toTopOf="@id/ext_exp_ll" />
+
+            <LinearLayout
+                android:id="@+id/ext_exp_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-condensed"
+                    android:gravity="center"
+                    android:text="Import:"
+                    android:textAlignment="center"
+                    android:textColor="@color/green"
+                    android:textSize="38px"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/import_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-black"
+                    android:textAlignment="textEnd"
+                    android:paddingEnd="2dp"
+                    android:textSize="45px"
+                    android:textStyle="bold"
+                    tools:text="1900.00" />
+
+            </LinearLayout>
+
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/orange"
+                app:layout_constraintBottom_toTopOf="@id/labour_ll" />
+
+            <LinearLayout
+                android:id="@+id/labour_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-condensed"
+                    android:gravity="center"
+                    android:text="Labour:"
+                    android:textAlignment="center"
+                    android:textColor="@color/green"
+                    android:textSize="38px"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/labour_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-black"
+                    android:textAlignment="textEnd"
+                    android:paddingEnd="2dp"
+                    android:textSize="45px"
+                    android:textStyle="bold"
+                    tools:text="1900.00" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view5"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/orange"
+                app:layout_constraintBottom_toTopOf="@id/import_ll" />
+
+            <LinearLayout
+                android:id="@+id/import_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-condensed"
+                    android:gravity="center"
+                    android:text="Ext. Exp.:"
+                    android:textAlignment="center"
+                    android:textColor="@color/green"
+                    android:textSize="38px"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/ext_exp_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-black"
+                    android:textAlignment="textEnd"
+                    android:paddingEnd="2dp"
+                    android:textSize="45px"
+                    android:textStyle="bold"
+                    tools:text="1900.00" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view6"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/orange" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-condensed"
+                    android:gravity="center"
+                    android:text="All Exp.:"
+                    android:textAlignment="center"
+                    android:textColor="@color/green"
+                    android:textSize="38px"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/all_exp_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-black"
+                    android:textAlignment="textEnd"
+                    android:paddingEnd="2dp"
+                    android:textSize="45px"
+                    android:textStyle="bold"
+                    tools:text="1900.00" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/right_side_ll"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@id/left_side_ll"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/left_side_ll"
+            app:layout_constraintTop_toTopOf="@id/left_side_ll">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/orange" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-condensed"
+                    android:gravity="center"
+                    android:text="Total:"
+                    android:textAlignment="center"
+                    android:textColor="@color/green"
+                    android:textSize="38px"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/total_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-black"
+                    android:paddingEnd="2dp"
+                    android:textAlignment="textEnd"
+                    android:textSize="45px"
+                    android:textStyle="bold"
+                    tools:text="1900.00" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/orange" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-condensed"
+                    android:gravity="center"
+                    android:text="All Exp.:"
+                    android:textAlignment="center"
+                    android:textColor="@color/green"
+                    android:textSize="38px"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/all_exp_tv_r"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-black"
+                    android:paddingEnd="2dp"
+                    android:textAlignment="textEnd"
+                    android:textSize="45px"
+                    android:textStyle="bold"
+                    tools:text="1900.00" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/orange" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-condensed"
+                    android:gravity="center"
+                    android:text="Grand Total:"
+                    android:textAlignment="center"
+                    android:textColor="@color/green"
+                    android:textSize="38px"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/grand_total_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-black"
+                    android:paddingEnd="2dp"
+                    android:textAlignment="textEnd"
+                    android:textSize="45px"
+                    android:textStyle="bold"
+                    tools:text="1900.00" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/left_side_ll"
+            app:layout_constraintBottom_toBottomOf="@id/left_side_ll"
+            android:background="@color/orange" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/right_side_ll"
+            app:layout_constraintTop_toTopOf="@id/left_side_ll"
+            app:layout_constraintBottom_toBottomOf="@id/left_side_ll"
+            android:background="@color/orange" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toEndOf="@id/left_side_ll"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/left_side_ll"
+            app:layout_constraintBottom_toBottomOf="@id/left_side_ll"
+            android:background="@color/orange" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</RelativeLayout>

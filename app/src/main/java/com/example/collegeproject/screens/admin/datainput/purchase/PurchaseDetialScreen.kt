@@ -1,5 +1,6 @@
 package com.example.collegeproject.screens.admin.datainput.purchase
 
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +29,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -37,6 +40,9 @@ import com.example.collegeproject.components.NormalTextComp
 import com.example.collegeproject.database.PurchaseSaleDao
 import com.example.collegeproject.database.UserDao
 import com.example.collegeproject.model.PurchaseProductResult
+import com.example.collegeproject.utils.BillFormat
+import com.example.collegeproject.utils.PdfConverter
+import com.example.collegeproject.utils.PdfDetails
 import com.example.collegeproject.viewmodels.admin.PurchaseDetailViewModel
 import com.example.collegeproject.viewmodels.admin.PurchaseDetailViewModelFactory
 import java.time.LocalDate
@@ -49,6 +55,8 @@ fun PurchaseDetailScreen(
     userDao: UserDao,
     sellerId: Long,
 ) {
+    val context = LocalContext.current
+    val activity = LocalContext.current as Activity
     val purchaseDetailViewModel: PurchaseDetailViewModel =
         viewModel(factory = PurchaseDetailViewModelFactory(purchaseSaleDao!!, userDao!!, sellerId))
 
@@ -117,6 +125,29 @@ fun PurchaseDetailScreen(
                         NameValueComp(name = "All Expenses", value = purchaseDetailViewModel.totalAfterExpenses.toString())
                         NameValueComp(name = "Grand Total", value = purchaseDetailViewModel.grandTotal.toString())
                     }
+                }
+                Button(onClick = {
+                    val pdfConverter = PdfConverter()
+                    val pdfDetails = PdfDetails(
+                        customerName = purchaseDetailViewModel.sellerName,
+                        date = purchaseDetailViewModel.date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+                        pItemsList = products!!,
+                        commission = purchaseDetailViewModel.commission.toString(),
+                        wage = purchaseDetailViewModel.labour.toString(),
+                        importFare = purchaseDetailViewModel.importFare.toString(),
+                        extExp = purchaseDetailViewModel.extraExpense.toString(),
+                        allExtExp = purchaseDetailViewModel.totalAfterExpenses.toString(),
+                        total = purchaseDetailViewModel.total.toString(),
+                        grandTotal = purchaseDetailViewModel.grandTotal.toString()
+                    )
+                    pdfConverter.createPdf(
+                        context,
+                        pdfDetails,
+                        activity,
+                        BillFormat.PURCHASE
+                    )
+                }) {
+                    Text(text = "Save PDF")
                 }
             }
         }

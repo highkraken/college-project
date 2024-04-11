@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/unit_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Unit"
+        android:layout_weight="0.8"
+        android:paddingVertical="2dp"
+        android:textSize="40px"
+        android:textAlignment="center"
+        android:fontFamily="sans-serif-condensed"
+        android:textStyle="bold" />
+    
+    <TextView
+        android:id="@+id/product_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Product"
+        android:layout_weight="3.26"
+        android:paddingStart="3dp"
+        android:paddingVertical="2dp"
+        android:textSize="40px"
+        android:textAlignment="textStart"
+        android:fontFamily="sans-serif-condensed"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/quantity_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Qty."
+        android:layout_weight="1"
+        android:paddingVertical="2dp"
+        android:textSize="40px"
+        android:textAlignment="textEnd"
+        android:fontFamily="sans-serif-condensed"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/rate_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Rate"
+        android:layout_weight="1"
+        android:paddingVertical="2dp"
+        android:textSize="40px"
+        android:textAlignment="textEnd"
+        android:fontFamily="sans-serif-condensed"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/item_total_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Total"
+        android:layout_weight="2"
+        android:paddingVertical="2dp"
+        android:textSize="40px"
+        android:textAlignment="textEnd"
+        android:fontFamily="sans-serif-condensed"
+        android:textStyle="bold" />
+
+</LinearLayout>
